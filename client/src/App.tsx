@@ -9,6 +9,7 @@ import Admin from "@/pages/Admin";
 import AdminLogin from "@/pages/AdminLogin";
 import Inventory from "@/pages/Inventory";
 import ProductDetails from "@/pages/ProductDetails";
+import About from "@/pages/About";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
@@ -30,6 +31,7 @@ function Router() {
       <main className="flex-grow">
         <Switch>
           <Route path="/" component={Home} />
+          <Route path="/about" component={About} />
           <Route path="/inventory" component={Inventory} />
           <Route path="/product/:id" component={ProductDetails} />
           <Route path="/admin-login" component={AdminLogin} />
