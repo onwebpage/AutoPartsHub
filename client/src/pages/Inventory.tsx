@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useLocation } from "wouter";
 import { 
   Search, 
   Filter, 
@@ -37,6 +38,7 @@ export default function Inventory() {
   const [filter, setFilter] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [showRecommendations, setShowRecommendations] = useState(false);
+  const [, setLocation] = useLocation();
   const searchRef = useRef<HTMLDivElement>(null);
 
   const recommendations = inventory.filter(item => item.trending).slice(0, 3);
@@ -279,8 +281,12 @@ export default function Inventory() {
                     </div>
 
                     <div className="flex gap-3">
-                      <Button className="flex-grow bg-white text-black hover:bg-primary hover:text-white border-none transition-all duration-500 h-14 rounded-2xl font-black uppercase tracking-widest text-xs group/btn" data-testid={`button-view-${item.id}`}>
-                        Configure Order
+                      <Button 
+                        onClick={() => setLocation(`/product/${item.id}`)}
+                        className="flex-grow bg-white text-black hover:bg-primary hover:text-white border-none transition-all duration-500 h-14 rounded-2xl font-black uppercase tracking-widest text-xs group/btn" 
+                        data-testid={`button-buy-now-${item.id}`}
+                      >
+                        Buy Now
                         <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover/btn:translate-x-1" />
                       </Button>
                       <Button variant="outline" className="w-14 h-14 rounded-2xl border-white/10 text-white hover:bg-white/5 hover:border-white/20 transition-all">
