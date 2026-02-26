@@ -35,7 +35,7 @@ export default function Home() {
               
               <h1 className="text-6xl md:text-7xl lg:text-8xl font-display font-black leading-[1] text-white tracking-tight animate-in fade-in slide-in-from-left duration-1000 delay-150">
                 Premium Parts.<br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-orange-400">Zero Compromise.</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-red-400">Zero Compromise.</span>
               </h1>
               
               <p className="text-xl md:text-2xl text-zinc-400 leading-relaxed max-w-xl animate-in fade-in slide-in-from-left duration-1000 delay-300">
@@ -66,7 +66,7 @@ export default function Home() {
 
             {/* Search Form Card */}
             <div className="lg:col-span-5 relative animate-in fade-in zoom-in duration-1000 delay-500">
-              <div className="absolute -inset-0.5 bg-gradient-to-br from-primary/50 to-orange-500/30 rounded-3xl blur opacity-30 group-hover:opacity-100 transition duration-1000"></div>
+              <div className="absolute -inset-0.5 bg-gradient-to-br from-primary/50 to-red-500/30 rounded-3xl blur opacity-30 group-hover:opacity-100 transition duration-1000"></div>
               <div className="relative glass-panel p-8 md:p-10 rounded-3xl border border-white/10 shadow-2xl bg-zinc-900/40 backdrop-blur-xl">
                 <div className="flex items-center justify-between mb-8">
                   <div>
