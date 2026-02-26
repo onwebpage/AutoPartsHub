@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { 
   Search, 
   Filter, 
@@ -13,7 +13,9 @@ import {
   MapPin,
   CheckCircle2,
   Zap,
-  Tag
+  Tag,
+  TrendingUp,
+  Sparkles
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,20 +25,34 @@ import { motion, AnimatePresence } from "framer-motion";
 import engineThumb from "@/assets/images/hero-engine.jpg";
 
 const inventory = [
-  { id: 1, name: "V8 Engine Assembly", vehicle: "2018 Ford F-150", type: "Engine", price: "$2,400", miles: "45k", warranty: "6 Months", image: engineThumb, location: "Dallas, TX", condition: "Tested" },
-  { id: 2, name: "Automatic Transmission", vehicle: "2020 Toyota Camry", type: "Transmission", price: "$1,200", miles: "32k", warranty: "1 Year", image: engineThumb, location: "Miami, FL", condition: "Like New" },
-  { id: 3, name: "Rear Axle Assembly", vehicle: "2019 Jeep Wrangler", type: "Axle", price: "$950", miles: "28k", warranty: "90 Days", image: engineThumb, location: "Phoenix, AZ", condition: "Certified" },
-  { id: 4, name: "Turbocharger Unit", vehicle: "2021 BMW 330i", type: "Engine Part", price: "$850", miles: "15k", warranty: "6 Months", image: engineThumb, location: "Atlanta, GA", condition: "Premium" },
-  { id: 5, name: "5.3L V8 Engine", vehicle: "2015 Chevrolet Silverado", type: "Engine", price: "$1,850", miles: "88k", warranty: "6 Months", image: engineThumb, location: "Denver, CO", condition: "Tested" },
-  { id: 6, name: "CVT Transmission", vehicle: "2019 Honda Civic", type: "Transmission", price: "$1,100", miles: "41k", warranty: "1 Year", image: engineThumb, location: "Seattle, WA", condition: "Certified" },
+  { id: 1, name: "V8 Engine Assembly", vehicle: "2018 Ford F-150", type: "Engine", price: "$2,400", miles: "45k", warranty: "6 Months", image: engineThumb, location: "Dallas, TX", condition: "Tested", trending: true },
+  { id: 2, name: "Automatic Transmission", vehicle: "2020 Toyota Camry", type: "Transmission", price: "$1,200", miles: "32k", warranty: "1 Year", image: engineThumb, location: "Miami, FL", condition: "Like New", trending: false },
+  { id: 3, name: "Rear Axle Assembly", vehicle: "2019 Jeep Wrangler", type: "Axle", price: "$950", miles: "28k", warranty: "90 Days", image: engineThumb, location: "Phoenix, AZ", condition: "Certified", trending: true },
+  { id: 4, name: "Turbocharger Unit", vehicle: "2021 BMW 330i", type: "Engine Part", price: "$850", miles: "15k", warranty: "6 Months", image: engineThumb, location: "Atlanta, GA", condition: "Premium", trending: false },
+  { id: 5, name: "5.3L V8 Engine", vehicle: "2015 Chevrolet Silverado", type: "Engine", price: "$1,850", miles: "88k", warranty: "6 Months", image: engineThumb, location: "Denver, CO", condition: "Tested", trending: true },
+  { id: 6, name: "CVT Transmission", vehicle: "2019 Honda Civic", type: "Transmission", price: "$1,100", miles: "41k", warranty: "1 Year", image: engineThumb, location: "Seattle, WA", condition: "Certified", trending: false },
 ];
 
 export default function Inventory() {
   const [filter, setFilter] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
+  const [showRecommendations, setShowRecommendations] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
+
+  const recommendations = inventory.filter(item => item.trending).slice(0, 3);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setShowRecommendations(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const filteredInventory = inventory.filter(item => {
-    const matchesFilter = filter === "All" || item.type === filter.replace(/s$/, ''); // Basic singular/plural matching
+    const matchesFilter = filter === "All" || item.type === filter.replace(/s$/, ''); 
     const searchLower = searchQuery.toLowerCase();
     const matchesSearch = item.name.toLowerCase().includes(searchLower) || 
                          item.vehicle.toLowerCase().includes(searchLower) ||
@@ -79,14 +95,72 @@ export default function Inventory() {
             transition={{ delay: 0.2 }}
             className="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto"
           >
-            <div className="relative w-full sm:w-80 group">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500 group-focus-within:text-primary transition-colors" />
+            <div className="relative w-full sm:w-80 group" ref={searchRef}>
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500 group-focus-within:text-primary transition-colors z-20" />
               <Input 
                 placeholder="Search Year, Make, Model..." 
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="bg-zinc-900/50 backdrop-blur-xl border-white/10 pl-12 text-white h-14 rounded-2xl focus:ring-primary/20 transition-all placeholder:text-zinc-600"
+                onFocus={() => setShowRecommendations(true)}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setShowRecommendations(e.target.value.length === 0);
+                }}
+                className="bg-zinc-900/50 backdrop-blur-xl border-white/10 pl-12 text-white h-14 rounded-2xl focus:ring-primary/20 transition-all placeholder:text-zinc-600 relative z-10"
               />
+              
+              <AnimatePresence>
+                {showRecommendations && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    className="absolute top-full left-0 right-0 mt-2 bg-zinc-900/90 backdrop-blur-2xl border border-white/10 rounded-2xl overflow-hidden shadow-2xl z-50"
+                  >
+                    <div className="p-4 border-b border-white/5 bg-white/5">
+                      <div className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-primary">
+                        <TrendingUp className="w-3 h-3" />
+                        Trending Recommendations
+                      </div>
+                    </div>
+                    <div className="p-2">
+                      {recommendations.map((item) => (
+                        <button
+                          key={item.id}
+                          onClick={() => {
+                            setSearchQuery(item.name);
+                            setShowRecommendations(false);
+                          }}
+                          className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 transition-colors group text-left"
+                        >
+                          <div className="w-12 h-12 rounded-lg overflow-hidden shrink-0 border border-white/10">
+                            <img src={item.image} alt="" className="w-full h-full object-cover" />
+                          </div>
+                          <div className="flex-grow min-w-0">
+                            <div className="text-sm font-bold text-white truncate group-hover:text-primary transition-colors">
+                              {item.name}
+                            </div>
+                            <div className="text-[10px] text-zinc-500 font-bold uppercase truncate">
+                              {item.vehicle}
+                            </div>
+                          </div>
+                          <div className="text-sm font-black text-white shrink-0">
+                            {item.price}
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                    <div className="p-3 bg-primary/5 text-center">
+                      <button 
+                        onClick={() => setShowRecommendations(false)}
+                        className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition-colors flex items-center justify-center gap-2 w-full"
+                      >
+                        <Sparkles className="w-3 h-3 text-primary" />
+                        View Personalized Suggestions
+                      </button>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
             <Button variant="outline" className="h-14 w-full sm:w-14 rounded-2xl border-white/10 text-white hover:bg-white/5 hover:border-primary/50 transition-all">
               <Settings2 className="w-5 h-5" />
