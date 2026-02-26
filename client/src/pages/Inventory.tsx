@@ -1,356 +1,168 @@
-import { useState, useRef, useEffect } from "react";
-import { useLocation } from "wouter";
-import { 
-  Search, 
-  Filter, 
-  ArrowRight, 
-  ChevronRight, 
-  Package, 
-  ShieldCheck, 
-  Truck,
-  Layers,
-  Settings2,
-  Clock,
-  MapPin,
-  CheckCircle2,
-  Zap,
-  Tag,
-  TrendingUp,
-  Sparkles
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useLocation, useSearch } from "wouter";
+import type { Product } from "@shared/schema";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { motion, AnimatePresence } from "framer-motion";
-import engineThumb from "@/assets/images/hero-engine.jpg";
-
-const inventory = [
-  { id: 1, name: "V8 Engine Assembly", vehicle: "2018 Ford F-150", type: "Engine", price: "$2,400", miles: "45k", warranty: "6 Months", image: engineThumb, location: "Dallas, TX", condition: "Tested", trending: true },
-  { id: 2, name: "Automatic Transmission", vehicle: "2020 Toyota Camry", type: "Transmission", price: "$1,200", miles: "32k", warranty: "1 Year", image: engineThumb, location: "Miami, FL", condition: "Like New", trending: false },
-  { id: 3, name: "Rear Axle Assembly", vehicle: "2019 Jeep Wrangler", type: "Axle", price: "$950", miles: "28k", warranty: "90 Days", image: engineThumb, location: "Phoenix, AZ", condition: "Certified", trending: true },
-  { id: 4, name: "Turbocharger Unit", vehicle: "2021 BMW 330i", type: "Engine Part", price: "$850", miles: "15k", warranty: "6 Months", image: engineThumb, location: "Atlanta, GA", condition: "Premium", trending: false },
-  { id: 5, name: "5.3L V8 Engine", vehicle: "2015 Chevrolet Silverado", type: "Engine", price: "$1,850", miles: "88k", warranty: "6 Months", image: engineThumb, location: "Denver, CO", condition: "Tested", trending: true },
-  { id: 6, name: "CVT Transmission", vehicle: "2019 Honda Civic", type: "Transmission", price: "$1,100", miles: "41k", warranty: "1 Year", image: engineThumb, location: "Seattle, WA", condition: "Certified", trending: false },
-];
+import { Badge } from "@/components/ui/badge";
+import { Search, Filter, Package } from "lucide-react";
 
 export default function Inventory() {
-  const [locationObj] = useLocation();
-  const searchParams = new URLSearchParams(window.location.search);
-  const initialQuery = searchParams.get("q") || "";
-  const initialType = searchParams.get("type") || "All";
-
-  const [filter, setFilter] = useState(initialType === "All" ? "All" : initialType.charAt(0).toUpperCase() + initialType.slice(1).toLowerCase().replace(/_/g, ' '));
-  const [searchQuery, setSearchQuery] = useState(initialQuery);
-  const [showRecommendations, setShowRecommendations] = useState(false);
   const [, setLocation] = useLocation();
-  const searchRef = useRef<HTMLDivElement>(null);
+  const searchParams = new URLSearchParams(useSearch());
+  const initialQuery = searchParams.get('q') || '';
+  const initialType = searchParams.get('type') || '';
+  
+  const [searchTerm, setSearchTerm] = useState(initialQuery);
+  const [filterType, setFilterType] = useState(initialType);
 
-  const recommendations = inventory.filter(item => item.trending).slice(0, 3);
+  const { data: products = [], isLoading } = useQuery<Product[]>({
+    queryKey: ['products'],
+    queryFn: async () => {
+      const response = await fetch('/api/products');
+      if (!response.ok) throw new Error('Failed to fetch products');
+      return response.json();
+    },
+  });
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
-        setShowRecommendations(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  const filteredProducts = products.filter(product => {
+    const searchLower = searchTerm.toLowerCase();
+    const matchesSearch = !searchTerm || 
+      product.make.toLowerCase().includes(searchLower) ||
+      product.model.toLowerCase().includes(searchLower) ||
+      product.partId.toLowerCase().includes(searchLower) ||
+      product.details.toLowerCase().includes(searchLower) ||
+      product.year.toString().includes(searchLower);
 
-  const filteredInventory = inventory.filter(item => {
-    const matchesFilter = filter === "All" || item.type === filter.replace(/s$/, ''); 
-    const searchLower = searchQuery.toLowerCase();
-    const matchesSearch = item.name.toLowerCase().includes(searchLower) || 
-                         item.vehicle.toLowerCase().includes(searchLower) ||
-                         item.type.toLowerCase().includes(searchLower);
-    return matchesFilter && matchesSearch;
+    const matchesType = !filterType || 
+      product.type.toLowerCase().includes(filterType.toLowerCase());
+
+    return matchesSearch && matchesType && product.status === 'In Stock';
   });
 
   return (
-    <div className="min-h-screen pt-32 pb-20 bg-black selection:bg-primary/30">
-      {/* Background Effects */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2" />
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-primary/5 blur-[120px] rounded-full translate-y-1/2 -translate-x-1/2" />
-      </div>
+    <div className="min-h-screen bg-zinc-950 pt-24 pb-16">
+      <div className="container mx-auto px-4 md:px-6">
+        <div className="mb-12">
+          <h1 className="text-4xl md:text-5xl font-display font-bold text-white mb-4">
+            Available Inventory
+          </h1>
+          <p className="text-zinc-400 text-lg">
+            Browse our current selection of quality used and rebuilt parts
+          </p>
+        </div>
 
-      <div className="container mx-auto px-4 md:px-6 relative z-10">
-        
-        {/* Header Section */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-10 mb-16">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="space-y-6"
+        {/* Search and Filter */}
+        <div className="mb-8 flex flex-col sm:flex-row gap-4">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-zinc-500" />
+            <Input
+              placeholder="Search by make, model, year, or part ID..."
+              className="pl-10 bg-zinc-900 border-white/10 text-white h-12"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          <select
+            className="h-12 rounded-lg border border-white/10 bg-zinc-900 px-4 text-white focus:ring-2 focus:ring-primary/50 outline-none"
+            value={filterType}
+            onChange={(e) => setFilterType(e.target.value)}
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
-              <span className="flex h-2 w-2 rounded-full bg-primary animate-pulse" />
-              <span className="text-xs font-bold text-zinc-300 uppercase tracking-widest">Global Inventory</span>
-            </div>
-            <h1 className="text-5xl md:text-7xl font-display font-black text-white tracking-tight">
-              Premium <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/60">Parts</span> Catalog
-            </h1>
-            <p className="text-zinc-400 max-w-xl text-lg leading-relaxed">
-              Precision-tested components for elite performance. Every part in our catalog undergoes rigorous 150-point inspection and certification.
+            <option value="">All Types</option>
+            <option value="engine">Engines</option>
+            <option value="transmission">Transmissions</option>
+            <option value="axle">Axles</option>
+            <option value="differential">Differentials</option>
+            <option value="transfer">Transfer Cases</option>
+          </select>
+        </div>
+
+        {/* Results Count */}
+        <div className="mb-6 text-zinc-400">
+          Showing {filteredProducts.length} {filteredProducts.length === 1 ? 'result' : 'results'}
+        </div>
+
+        {/* Products Grid */}
+        {isLoading ? (
+          <div className="text-center text-zinc-400 py-20">
+            Loading inventory...
+          </div>
+        ) : filteredProducts.length === 0 ? (
+          <div className="text-center py-20">
+            <Package className="w-16 h-16 text-zinc-700 mx-auto mb-4" />
+            <h3 className="text-2xl font-display font-bold text-white mb-2">
+              No Products Found
+            </h3>
+            <p className="text-zinc-400 mb-6">
+              Try adjusting your search or filters
             </p>
-          </motion.div>
-          
-          <motion.div 
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
-            className="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto"
-          >
-            <div className="relative w-full sm:w-80 group" ref={searchRef}>
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500 group-focus-within:text-primary transition-colors z-20" />
-              <Input 
-                placeholder="Search Year, Make, Model..." 
-                value={searchQuery}
-                onFocus={() => setShowRecommendations(true)}
-                onChange={(e) => {
-                  setSearchQuery(e.target.value);
-                  setShowRecommendations(e.target.value.length === 0);
-                }}
-                className="bg-zinc-900/50 backdrop-blur-xl border-white/10 pl-12 text-white h-14 rounded-2xl focus:ring-primary/20 transition-all placeholder:text-zinc-600 relative z-10"
-              />
-              
-              <AnimatePresence>
-                {showRecommendations && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                    className="absolute top-full left-0 right-0 mt-2 bg-zinc-900/90 backdrop-blur-2xl border border-white/10 rounded-2xl overflow-hidden shadow-2xl z-50"
-                  >
-                    <div className="p-4 border-b border-white/5 bg-white/5">
-                      <div className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-primary">
-                        <TrendingUp className="w-3 h-3" />
-                        Trending Recommendations
-                      </div>
-                    </div>
-                    <div className="p-2">
-                      {recommendations.map((item) => (
-                        <button
-                          key={item.id}
-                          onClick={() => {
-                            setSearchQuery(item.name);
-                            setShowRecommendations(false);
-                          }}
-                          className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 transition-colors group text-left"
-                        >
-                          <div className="w-12 h-12 rounded-lg overflow-hidden shrink-0 border border-white/10">
-                            <img src={item.image} alt="" className="w-full h-full object-cover" />
-                          </div>
-                          <div className="flex-grow min-w-0">
-                            <div className="text-sm font-bold text-white truncate group-hover:text-primary transition-colors">
-                              {item.name}
-                            </div>
-                            <div className="text-[10px] text-zinc-500 font-bold uppercase truncate">
-                              {item.vehicle}
-                            </div>
-                          </div>
-                          <div className="text-sm font-black text-white shrink-0">
-                            {item.price}
-                          </div>
-                        </button>
-                      ))}
-                    </div>
-                    <div className="p-3 bg-primary/5 text-center">
-                      <button 
-                        onClick={() => setShowRecommendations(false)}
-                        className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition-colors flex items-center justify-center gap-2 w-full"
-                      >
-                        <Sparkles className="w-3 h-3 text-primary" />
-                        View Personalized Suggestions
-                      </button>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-            <Button variant="outline" className="h-14 w-full sm:w-14 rounded-2xl border-white/10 text-white hover:bg-white/5 hover:border-primary/50 transition-all">
-              <Settings2 className="w-5 h-5" />
-            </Button>
-          </motion.div>
-        </div>
-
-        {/* Filter Tabs */}
-        <div className="flex items-center gap-3 overflow-x-auto pb-6 mb-12 no-scrollbar">
-          {["All", "Engines", "Transmissions", "Axles", "Suspension", "Body"].map((cat, idx) => (
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: idx * 0.05 }}
-              key={cat}
+            <Button
+              onClick={() => {
+                setSearchTerm('');
+                setFilterType('');
+              }}
+              variant="outline"
+              className="border-white/10 text-white"
             >
-              <Button
-                onClick={() => setFilter(cat)}
-                variant={filter === cat ? "default" : "outline"}
-                className={`rounded-xl px-8 h-12 whitespace-nowrap text-sm font-bold transition-all duration-300 ${
-                  filter === cat 
-                    ? "bg-primary text-white shadow-xl shadow-primary/20 border-none scale-105" 
-                    : "bg-zinc-900/40 border-white/5 text-zinc-500 hover:text-white hover:border-white/20"
-                }`}
-              >
-                {cat}
-              </Button>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Inventory Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
-          <AnimatePresence mode="popLayout">
-            {filteredInventory.map((item, idx) => (
-              <motion.div
-                key={item.id}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.3 }}
-                layout
-              >
-                <Card className="group relative bg-zinc-900/40 backdrop-blur-sm border-white/5 overflow-hidden transition-all duration-500 hover:border-primary/40 hover:bg-zinc-900/60 shadow-2xl">
-                  {/* Image Container */}
-                  <div className="relative aspect-[4/3] overflow-hidden">
-                    <img 
-                      src={item.image} 
-                      alt={item.name} 
-                      className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+              Clear Filters
+            </Button>
+          </div>
+        ) : (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredProducts.map((product) => (
+              <Card key={product.id} className="bg-zinc-900 border-white/10 overflow-hidden hover:border-primary/50 transition-all group">
+                <div className="aspect-video bg-zinc-950 relative overflow-hidden">
+                  {product.imageUrl ? (
+                    <img
+                      src={product.imageUrl}
+                      alt={`${product.year} ${product.make} ${product.model}`}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
-                    
-                    {/* Overlays */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80" />
-                    <div className="absolute inset-0 bg-primary/10 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    
-                    {/* Top Badges */}
-                    <div className="absolute top-4 left-4 flex flex-col gap-2">
-                      <Badge className="bg-black/60 backdrop-blur-md border-white/10 text-white font-bold px-3 py-1 rounded-lg">
-                        {item.type}
-                      </Badge>
-                      <Badge className="bg-primary/90 text-white border-none font-black text-[10px] tracking-tighter uppercase px-2 py-0.5 rounded shadow-lg">
-                        In Stock
-                      </Badge>
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <Package className="w-16 h-16 text-zinc-700" />
                     </div>
-
-                    {/* Quick Stats Overlay */}
-                    <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
-                      <div className="flex gap-2">
-                        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 backdrop-blur-md text-[10px] font-black text-emerald-400 uppercase tracking-widest">
-                          <CheckCircle2 className="w-3 h-3" /> {item.condition}
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-1.5 text-white/60 text-[10px] font-bold uppercase tracking-widest">
-                        <MapPin className="w-3 h-3" /> {item.location}
-                      </div>
-                    </div>
+                  )}
+                  <Badge className="absolute top-3 right-3 bg-emerald-500/20 text-emerald-400 border-emerald-500/30">
+                    {product.status}
+                  </Badge>
+                </div>
+                <CardContent className="p-6">
+                  <div className="mb-3">
+                    <Badge variant="outline" className="text-primary border-primary/30 mb-2">
+                      {product.type}
+                    </Badge>
+                    <h3 className="text-xl font-display font-bold text-white mb-1">
+                      {product.year} {product.make} {product.model}
+                    </h3>
+                    <p className="text-sm text-zinc-400">{product.details}</p>
                   </div>
                   
-                  <CardContent className="p-8 space-y-6">
-                    <div className="flex justify-between items-start gap-4">
-                      <div className="space-y-1">
-                        <h3 className="text-2xl font-display font-black text-white group-hover:text-primary transition-colors leading-tight">
-                          {item.name}
-                        </h3>
-                        <p className="text-zinc-500 text-sm font-bold tracking-tight">
-                          {item.vehicle}
-                        </p>
-                      </div>
-                      <div className="text-right shrink-0">
-                        <div className="flex items-baseline gap-1">
-                          <span className="text-xs font-bold text-primary">$</span>
-                          <span className="text-3xl font-display font-black text-white tracking-tighter">
-                            {item.price.replace('$', '')}
-                          </span>
-                        </div>
-                        <p className="text-[9px] text-zinc-600 font-black uppercase tracking-[0.2em] mt-1">Verified Price</p>
-                      </div>
+                  <div className="flex items-center justify-between pt-4 border-t border-white/5">
+                    <div>
+                      <p className="text-xs text-zinc-500 uppercase tracking-wider">Part ID</p>
+                      <p className="text-sm font-mono text-white">{product.partId}</p>
                     </div>
-
-                    <div className="grid grid-cols-2 gap-6 py-6 border-y border-white/5">
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2 text-zinc-500">
-                          <Zap className="w-3.5 h-3.5 text-primary" />
-                          <span className="text-[10px] font-black uppercase tracking-widest">Mileage</span>
-                        </div>
-                        <p className="text-lg text-zinc-200 font-bold tracking-tight">{item.miles}</p>
-                      </div>
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2 text-zinc-500">
-                          <ShieldCheck className="w-3.5 h-3.5 text-primary" />
-                          <span className="text-[10px] font-black uppercase tracking-widest">Warranty</span>
-                        </div>
-                        <p className="text-lg text-zinc-200 font-bold tracking-tight">{item.warranty}</p>
-                      </div>
+                    <div className="text-right">
+                      <p className="text-2xl font-bold text-white">
+                        ₹{product.price.toLocaleString()}
+                      </p>
                     </div>
+                  </div>
 
-                    <div className="flex gap-3">
-                      <Button 
-                        onClick={() => setLocation(`/product/${item.id}`)}
-                        className="flex-grow bg-white text-black hover:bg-primary hover:text-white border-none transition-all duration-500 h-14 rounded-2xl font-black uppercase tracking-widest text-xs group/btn" 
-                        data-testid={`button-buy-now-${item.id}`}
-                      >
-                        Buy Now
-                        <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover/btn:translate-x-1" />
-                      </Button>
-                      <Button variant="outline" className="w-14 h-14 rounded-2xl border-white/10 text-white hover:bg-white/5 hover:border-white/20 transition-all">
-                        <Tag className="w-5 h-5" />
-                      </Button>
-                    </div>
-                  </CardContent>
-
-                  {/* Hover Accent Line */}
-                  <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-primary transition-all duration-500 group-hover:w-full" />
-                </Card>
-              </motion.div>
+                  <Button 
+                    className="w-full mt-4 bg-primary hover:bg-primary/90 text-white"
+                    onClick={() => setLocation(`/product/${product.id}`)}
+                  >
+                    Buy Now
+                  </Button>
+                </CardContent>
+              </Card>
             ))}
-          </AnimatePresence>
-        </div>
-
-        {filteredInventory.length === 0 && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="py-24 text-center space-y-4"
-          >
-            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-zinc-900 border border-white/5 mb-4">
-              <Package className="w-10 h-10 text-zinc-700" />
-            </div>
-            <h3 className="text-2xl font-display font-bold text-white">No parts found</h3>
-            <p className="text-zinc-500 max-w-md mx-auto">We couldn't find any parts matching your current search or filter. Try adjusting your criteria or contact our sourcing team.</p>
-            <Button 
-              variant="link" 
-              onClick={() => { setFilter("All"); setSearchQuery(""); }}
-              className="text-primary font-bold uppercase tracking-widest text-xs"
-            >
-              Reset all filters
-            </Button>
-          </motion.div>
+          </div>
         )}
-
-        {/* Premium Footer Info */}
-        <div className="mt-24 py-16 border-t border-white/5 flex flex-col items-center text-center space-y-8">
-          <div className="flex -space-x-4">
-            {[1,2,3,4].map(i => (
-              <div key={i} className="w-12 h-12 rounded-full border-4 border-black bg-zinc-800 overflow-hidden ring-2 ring-primary/20">
-                <div className="w-full h-full bg-gradient-to-br from-zinc-700 to-zinc-900" />
-              </div>
-            ))}
-            <div className="w-12 h-12 rounded-full border-4 border-black bg-primary flex items-center justify-center text-[10px] font-black text-white ring-2 ring-primary/20">
-              +4.2k
-            </div>
-          </div>
-          <div className="space-y-2">
-            <h2 className="text-2xl font-display font-bold text-white">Can't find your specific part?</h2>
-            <p className="text-zinc-500">Our nationwide network adds 500+ new verified parts daily.</p>
-          </div>
-          <Button variant="outline" className="border-white/10 text-zinc-400 hover:text-white px-12 h-16 rounded-2xl text-lg font-bold hover:border-primary/50 transition-all">
-            Contact Sourcing Team
-          </Button>
-        </div>
       </div>
     </div>
   );
 }
-

@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
+import { useQuery } from "@tanstack/react-query";
+import type { Product } from "@shared/schema";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -33,6 +35,16 @@ export default function Home() {
     part: ""
   });
 
+  // Fetch real products from database
+  const { data: products = [] } = useQuery<Product[]>({
+    queryKey: ['products'],
+    queryFn: async () => {
+      const response = await fetch('/api/products');
+      if (!response.ok) throw new Error('Failed to fetch products');
+      return response.json();
+    },
+  });
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.year || !formData.make || !formData.model || !formData.part) return;
@@ -41,31 +53,41 @@ export default function Home() {
     setSearchStep(1);
   };
 
-  const getMatchingCount = () => {
-    // This is a simplified matching logic to show the user real results
-    // In a real app, this would be an API call
-    const inventory = [
-      { name: "V8 Engine Assembly", vehicle: "2018 Ford F-150", type: "Engine" },
-      { name: "Automatic Transmission", vehicle: "2020 Toyota Camry", type: "Transmission" },
-      { name: "Rear Axle Assembly", vehicle: "2019 Jeep Wrangler", type: "Axle" },
-      { name: "Turbocharger Unit", vehicle: "2021 BMW 330i", type: "Engine Part" },
-      { name: "5.3L V8 Engine", vehicle: "2015 Chevrolet Silverado", type: "Engine" },
-      { name: "CVT Transmission", vehicle: "2019 Honda Civic", type: "Transmission" },
-    ];
+  const getMatchingProducts = () => {
+    if (!formData.year || !formData.make || !formData.model || !formData.part) {
+      return [];
+    }
 
-    const searchLower = `${formData.year} ${formData.make} ${formData.model}`.toLowerCase();
-    const partType = formData.part.toLowerCase().replace(/_/g, ' ');
+    const yearNum = parseInt(formData.year);
+    const makeLower = formData.make.toLowerCase();
+    const modelLower = formData.model.toLowerCase();
+    const partLower = formData.part.toLowerCase();
 
-    return inventory.filter(item => {
-      const matchesVehicle = item.vehicle.toLowerCase().includes(formData.make.toLowerCase()) && 
-                             item.vehicle.toLowerCase().includes(formData.model.toLowerCase());
-      const matchesPart = item.type.toLowerCase().includes(partType) || 
-                          item.name.toLowerCase().includes(partType);
-      return matchesVehicle || matchesPart;
-    }).length;
+    return products.filter(product => {
+      const productMake = product.make.toLowerCase();
+      const productModel = product.model.toLowerCase();
+      const productType = product.type.toLowerCase();
+      const productYear = product.year;
+
+      // Check if make matches
+      const makeMatches = productMake.includes(makeLower) || makeLower.includes(productMake);
+      
+      // Check if model matches
+      const modelMatches = productModel.includes(modelLower) || modelLower.includes(productModel);
+      
+      // Check if part type matches
+      const partMatches = productType.includes(partLower) || partLower.includes(productType);
+      
+      // Check if year is within reasonable range (±3 years)
+      const yearMatches = Math.abs(productYear - yearNum) <= 3;
+
+      // Product must match make, model, part type, and be within year range
+      return makeMatches && modelMatches && partMatches && yearMatches;
+    });
   };
 
-  const matchingCount = getMatchingCount();
+  const matchingProducts = getMatchingProducts();
+  const matchingCount = matchingProducts.length;
 
   useEffect(() => {
     if (isSearching && searchStep < 4) {
@@ -282,8 +304,10 @@ export default function Home() {
                               </div>
                               <div className="space-y-2">
                                 <h3 className="text-3xl font-display font-bold text-white">Part Found!</h3>
-                                <p className="text-emerald-400 font-medium">We found {matchingCount} matching {matchingCount === 1 ? 'result' : 'results'} for your {formData.make} {formData.model}.</p>
-                                <p className="text-zinc-400 text-sm">Estimated Price: <span className="text-white font-bold">$1,850 - $2,400</span></p>
+                                <p className="text-emerald-400 font-medium">We found {matchingCount} matching {matchingCount === 1 ? 'result' : 'results'} for your {formData.year} {formData.make} {formData.model}.</p>
+                                {matchingProducts.length > 0 && (
+                                  <p className="text-zinc-400 text-sm">Estimated Price: <span className="text-white font-bold">₹{Math.min(...matchingProducts.map(p => p.price)).toLocaleString()} - ₹{Math.max(...matchingProducts.map(p => p.price)).toLocaleString()}</span></p>
+                                )}
                               </div>
                               <div className="pt-4 space-y-3">
                                 <Button 

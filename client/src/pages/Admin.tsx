@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import type { Product } from "@shared/schema";
 import { 
   Table, 
   TableBody, 
@@ -27,18 +29,17 @@ import {
   ArrowDownRight, 
   Shield, 
   Zap,
-  LayoutDashboard,
-  AlertCircle
+  AlertCircle,
+  Edit,
+  Trash2
 } from "lucide-react";
-
-// Mock Data
-const mockParts = [
-  { id: "RAP-1001", type: "Engine", year: 2018, make: "Ford", model: "F-150", details: "5.0L V8", price: "$2,400", status: "In Stock", customer: "John Doe" },
-  { id: "RAP-1002", type: "Transmission", year: 2020, make: "Toyota", model: "Camry", details: "8-Speed Auto", price: "$1,200", status: "Processing", customer: "Sarah Smith" },
-  { id: "RAP-1003", type: "Engine", year: 2015, make: "Chevrolet", model: "Silverado", details: "5.3L V8", price: "$1,850", status: "Shipped", customer: "Mike Johnson" },
-  { id: "RAP-1004", type: "Axle", year: 2019, make: "Jeep", model: "Wrangler", details: "Rear Axle Assembly", price: "$950", status: "In Stock", customer: "Pending" },
-  { id: "RAP-1005", type: "Engine", year: 2022, make: "Honda", model: "Accord", details: "2.0L Turbo", price: "$3,100", status: "In Stock", customer: "Pending" },
-];
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { ProductDialog } from "@/components/ProductDialog";
 
 const stats = [
   { label: "Active Sessions", value: "24", change: "+12%", icon: Users, color: "text-blue-500", bg: "bg-blue-500/10", trend: "up" },
@@ -57,12 +58,53 @@ const recentActivity = [
 export default function Admin() {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeTab, setActiveTab] = useState<"inventory" | "monitoring" | "security">("inventory");
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [editingProduct, setEditingProduct] = useState<Product | undefined>();
+  const queryClient = useQueryClient();
 
-  const filteredParts = mockParts.filter(part => 
+  const { data: products = [], isLoading } = useQuery<Product[]>({
+    queryKey: ['products'],
+    queryFn: async () => {
+      const response = await fetch('/api/products');
+      if (!response.ok) throw new Error('Failed to fetch products');
+      return response.json();
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: async (id: string) => {
+      const response = await fetch(`/api/products/${id}`, {
+        method: 'DELETE',
+      });
+      if (!response.ok) throw new Error('Failed to delete product');
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+    },
+  });
+
+  const filteredParts = products.filter(part => 
     part.make.toLowerCase().includes(searchTerm.toLowerCase()) || 
     part.model.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    part.id.toLowerCase().includes(searchTerm.toLowerCase())
+    part.partId.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const handleAddProduct = () => {
+    setEditingProduct(undefined);
+    setDialogOpen(true);
+  };
+
+  const handleEditProduct = (product: Product) => {
+    setEditingProduct(product);
+    setDialogOpen(true);
+  };
+
+  const handleDeleteProduct = (id: string) => {
+    if (confirm('Are you sure you want to delete this product?')) {
+      deleteMutation.mutate(id);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-zinc-950 flex flex-col md:flex-row">
@@ -132,7 +174,10 @@ export default function Admin() {
                   <h1 className="text-3xl font-display font-bold text-white tracking-tight">Inventory Management</h1>
                   <p className="text-zinc-400">View customer requests and manage part inventory.</p>
                 </div>
-                <Button className="bg-primary text-white hover:bg-primary/90 rounded-full px-6 shadow-lg shadow-primary/20">
+                <Button 
+                  onClick={handleAddProduct}
+                  className="bg-primary text-white hover:bg-primary/90 rounded-full px-6 shadow-lg shadow-primary/20"
+                >
                   <Plus className="mr-2 h-4 w-4" /> Add New Part
                 </Button>
               </div>
@@ -152,52 +197,85 @@ export default function Admin() {
                 </Button>
               </div>
 
-              <div className="bg-zinc-900 border border-white/10 rounded-2xl overflow-hidden shadow-2xl shadow-black/50">
-                <Table>
-                  <TableHeader className="bg-zinc-950">
-                    <TableRow className="border-white/10 hover:bg-transparent">
-                      <TableHead className="text-zinc-400 font-medium">Part ID</TableHead>
-                      <TableHead className="text-zinc-400 font-medium">Vehicle</TableHead>
-                      <TableHead className="text-zinc-400 font-medium">Part Type</TableHead>
-                      <TableHead className="text-zinc-400 font-medium">Price</TableHead>
-                      <TableHead className="text-zinc-400 font-medium">Status</TableHead>
-                      <TableHead className="text-zinc-400 font-medium">Customer</TableHead>
-                      <TableHead className="text-zinc-400 font-medium text-right">Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {filteredParts.map((part) => (
-                      <TableRow key={part.id} className="border-white/10 hover:bg-white/5 transition-colors group">
-                        <TableCell className="font-medium text-white">{part.id}</TableCell>
-                        <TableCell>
-                          <div className="text-white font-medium">{part.year} {part.make} {part.model}</div>
-                          <div className="text-xs text-zinc-500">{part.details}</div>
-                        </TableCell>
-                        <TableCell className="text-zinc-300">{part.type}</TableCell>
-                        <TableCell className="text-zinc-300">{part.price}</TableCell>
-                        <TableCell>
-                          <Badge 
-                            variant="outline" 
-                            className={`rounded-full px-3 py-0.5 text-[10px] uppercase tracking-wider
-                              ${part.status === 'In Stock' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : ''}
-                              ${part.status === 'Processing' ? 'bg-amber-500/10 text-amber-400 border-amber-500/20' : ''}
-                              ${part.status === 'Shipped' ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' : ''}
-                            `}
-                          >
-                            {part.status}
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="text-zinc-400">{part.customer}</TableCell>
-                        <TableCell className="text-right">
-                          <Button variant="ghost" size="icon" className="text-zinc-500 hover:text-white group-hover:bg-white/5 rounded-full transition-all">
-                            <MoreHorizontal className="h-4 w-4" />
-                          </Button>
-                        </TableCell>
+              {isLoading ? (
+                <div className="text-center text-zinc-400 py-12">Loading products...</div>
+              ) : (
+                <div className="bg-zinc-900 border border-white/10 rounded-2xl overflow-hidden shadow-2xl shadow-black/50">
+                  <Table>
+                    <TableHeader className="bg-zinc-950">
+                      <TableRow className="border-white/10 hover:bg-transparent">
+                        <TableHead className="text-zinc-400 font-medium">Part ID</TableHead>
+                        <TableHead className="text-zinc-400 font-medium">Vehicle</TableHead>
+                        <TableHead className="text-zinc-400 font-medium">Part Type</TableHead>
+                        <TableHead className="text-zinc-400 font-medium">Price</TableHead>
+                        <TableHead className="text-zinc-400 font-medium">Status</TableHead>
+                        <TableHead className="text-zinc-400 font-medium">Customer</TableHead>
+                        <TableHead className="text-zinc-400 font-medium text-right">Actions</TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
+                    </TableHeader>
+                    <TableBody>
+                      {filteredParts.length === 0 ? (
+                        <TableRow>
+                          <TableCell colSpan={7} className="text-center text-zinc-500 py-12">
+                            No products found. Add your first product to get started.
+                          </TableCell>
+                        </TableRow>
+                      ) : (
+                        filteredParts.map((part) => (
+                          <TableRow key={part.id} className="border-white/10 hover:bg-white/5 transition-colors group">
+                            <TableCell className="font-medium text-white">{part.partId}</TableCell>
+                            <TableCell>
+                              <div className="text-white font-medium">{part.year} {part.make} {part.model}</div>
+                              <div className="text-xs text-zinc-500">{part.details}</div>
+                            </TableCell>
+                            <TableCell className="text-zinc-300">{part.type}</TableCell>
+                            <TableCell className="text-zinc-300">${part.price.toLocaleString()}</TableCell>
+                            <TableCell>
+                              <Badge 
+                                variant="outline" 
+                                className={`rounded-full px-3 py-0.5 text-[10px] uppercase tracking-wider
+                                  ${part.status === 'In Stock' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : ''}
+                                  ${part.status === 'Processing' ? 'bg-amber-500/10 text-amber-400 border-amber-500/20' : ''}
+                                  ${part.status === 'Shipped' ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' : ''}
+                                  ${part.status === 'Out of Stock' ? 'bg-red-500/10 text-red-400 border-red-500/20' : ''}
+                                `}
+                              >
+                                {part.status}
+                              </Badge>
+                            </TableCell>
+                            <TableCell className="text-zinc-400">{part.customer}</TableCell>
+                            <TableCell className="text-right">
+                              <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                  <Button variant="ghost" size="icon" className="text-zinc-500 hover:text-white group-hover:bg-white/5 rounded-full transition-all">
+                                    <MoreHorizontal className="h-4 w-4" />
+                                  </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent className="bg-zinc-900 border-white/10">
+                                  <DropdownMenuItem 
+                                    onClick={() => handleEditProduct(part)}
+                                    className="text-white hover:bg-white/5 cursor-pointer"
+                                  >
+                                    <Edit className="mr-2 h-4 w-4" />
+                                    Edit
+                                  </DropdownMenuItem>
+                                  <DropdownMenuItem 
+                                    onClick={() => handleDeleteProduct(part.id)}
+                                    className="text-red-400 hover:bg-red-500/10 cursor-pointer"
+                                  >
+                                    <Trash2 className="mr-2 h-4 w-4" />
+                                    Delete
+                                  </DropdownMenuItem>
+                                </DropdownMenuContent>
+                              </DropdownMenu>
+                            </TableCell>
+                          </TableRow>
+                        ))
+                      )}
+                    </TableBody>
+                  </Table>
+                </div>
+              )}
             </div>
           )}
 
@@ -376,6 +454,12 @@ export default function Admin() {
 
         </div>
       </main>
+
+      <ProductDialog 
+        open={dialogOpen} 
+        onOpenChange={setDialogOpen}
+        product={editingProduct}
+      />
     </div>
   );
 }
