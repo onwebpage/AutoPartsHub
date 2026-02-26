@@ -84,8 +84,12 @@ export default function Footer() {
             © {new Date().getFullYear()} Rex Auto Parts (RAP). All rights reserved.
           </p>
           <div className="flex gap-4 text-xs text-zinc-500">
-            <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
+            <Link href="/privacy-policy">
+              <span className="hover:text-white transition-colors cursor-pointer">Privacy Policy</span>
+            </Link>
+            <Link href="/terms-of-service">
+              <span className="hover:text-white transition-colors cursor-pointer">Terms of Service</span>
+            </Link>
             <Link href="/refund-policy">
               <span className="hover:text-white transition-colors cursor-pointer">Return Policy</span>
             </Link>
