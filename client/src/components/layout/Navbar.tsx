@@ -10,7 +10,7 @@ export default function Navbar() {
   // Hidden admin links as per user request
   const navLinks = [
     { name: "Home", href: "/" },
-    { name: "Inventory", href: "#inventory" },
+    { name: "Inventory", href: "/inventory" },
     { name: "About Us", href: "#about" },
     { name: "Contact", href: "#contact" },
   ];

@@ -36,7 +36,7 @@ export default function Footer() {
             <ul className="space-y-2">
               <li><Link href="/"><span className="text-zinc-400 hover:text-primary transition-colors text-sm cursor-pointer">Home</span></Link></li>
               <li><a href="#about" className="text-zinc-400 hover:text-primary transition-colors text-sm">About RAP</a></li>
-              <li><a href="#inventory" className="text-zinc-400 hover:text-primary transition-colors text-sm">Our Inventory</a></li>
+              <li><Link href="/inventory"><span className="text-zinc-400 hover:text-primary transition-colors text-sm cursor-pointer">Our Inventory</span></Link></li>
               {isAdmin && (
                 <li>
                   <button 

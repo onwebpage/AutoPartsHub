@@ -7,6 +7,7 @@ import NotFound from "@/pages/not-found";
 import Home from "@/pages/Home";
 import Admin from "@/pages/Admin";
 import AdminLogin from "@/pages/AdminLogin";
+import Inventory from "@/pages/Inventory";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
@@ -28,6 +29,7 @@ function Router() {
       <main className="flex-grow">
         <Switch>
           <Route path="/" component={Home} />
+          <Route path="/inventory" component={Inventory} />
           <Route path="/admin-login" component={AdminLogin} />
           <Route path="/admin">
             {() => <ProtectedRoute component={Admin} />}
