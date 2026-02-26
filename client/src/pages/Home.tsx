@@ -132,29 +132,6 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Infinite Review Marquee */}
-              <div className="relative py-4 mt-8 w-screen left-1/2 -translate-x-1/2 overflow-hidden border-y border-white/5 bg-zinc-950/50 backdrop-blur-sm group">
-                <div className="flex animate-marquee gap-8 whitespace-nowrap items-center">
-                  {[...REVIEWS, ...REVIEWS].map((review, i) => (
-                    <div 
-                      key={i} 
-                      className="inline-flex items-center gap-4 bg-zinc-900/40 border border-white/5 rounded-2xl p-4 px-6 min-w-[400px]"
-                    >
-                      <div className="flex flex-col">
-                        <div className="flex items-center gap-1 mb-1">
-                          {[...Array(5)].map((_, i) => (
-                            <Star key={i} className="w-3 h-3 fill-yellow-500 text-yellow-500" />
-                          ))}
-                        </div>
-                        <p className="text-sm text-zinc-300 italic line-clamp-2">"{review.text}"</p>
-                        <p className="text-xs font-bold text-white mt-2">
-                          {review.name} <span className="text-zinc-500 font-normal"> – {review.location}</span>
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
             </div>
 
             {/* Search Form Card */}
@@ -400,6 +377,30 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Infinite Review Marquee - Moved below Why Choose RAP */}
+      <div className="relative py-8 overflow-hidden border-y border-white/5 bg-zinc-950 group">
+        <div className="flex animate-marquee gap-8 whitespace-nowrap items-center">
+          {[...REVIEWS, ...REVIEWS].map((review, i) => (
+            <div 
+              key={i} 
+              className="inline-flex items-center gap-4 bg-zinc-900/40 border border-white/5 rounded-2xl p-6 min-w-[450px]"
+            >
+              <div className="flex flex-col">
+                <div className="flex items-center gap-1 mb-2">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-yellow-500 text-yellow-500" />
+                  ))}
+                </div>
+                <p className="text-base text-zinc-300 italic whitespace-normal leading-relaxed">"{review.text}"</p>
+                <p className="text-sm font-bold text-white mt-4">
+                  {review.name} <span className="text-zinc-500 font-normal"> – {review.location}</span>
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
 
       {/* MISSION & WAREHOUSE */}
       <section className="py-24 relative overflow-hidden">
