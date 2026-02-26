@@ -16,6 +16,7 @@ import TermsOfService from "@/pages/TermsOfService";
 import Contact from "@/pages/Contact";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import ScrollToTop from "@/components/layout/ScrollToTop";
 
 // Simple route protection mockup
 const ProtectedRoute = ({ component: Component, ...rest }: any) => {
@@ -31,6 +32,7 @@ const ProtectedRoute = ({ component: Component, ...rest }: any) => {
 function Router() {
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
+      <ScrollToTop />
       <Navbar />
       <main className="flex-grow">
         <Switch>
