@@ -10,6 +10,7 @@ import AdminLogin from "@/pages/AdminLogin";
 import Inventory from "@/pages/Inventory";
 import ProductDetails from "@/pages/ProductDetails";
 import About from "@/pages/About";
+import RefundPolicy from "@/pages/RefundPolicy";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
@@ -32,6 +33,7 @@ function Router() {
         <Switch>
           <Route path="/" component={Home} />
           <Route path="/about" component={About} />
+          <Route path="/refund-policy" component={RefundPolicy} />
           <Route path="/inventory" component={Inventory} />
           <Route path="/product/:id" component={ProductDetails} />
           <Route path="/admin-login" component={AdminLogin} />

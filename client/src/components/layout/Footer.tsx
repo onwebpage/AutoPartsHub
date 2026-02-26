@@ -86,7 +86,9 @@ export default function Footer() {
           <div className="flex gap-4 text-xs text-zinc-500">
             <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
             <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
-            <a href="#" className="hover:text-white transition-colors">Return Policy</a>
+            <Link href="/refund-policy">
+              <span className="hover:text-white transition-colors cursor-pointer">Return Policy</span>
+            </Link>
           </div>
         </div>
       </div>
