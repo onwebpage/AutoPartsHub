@@ -17,14 +17,14 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           <div className="space-y-4">
             <Link href="/">
-              <a className="flex items-center gap-2">
+              <div className="flex items-center gap-2 cursor-pointer group">
                 <div className="bg-primary p-1.5 rounded-md">
                   <Wrench className="w-5 h-5 text-white" />
                 </div>
                 <span className="font-display font-bold text-xl tracking-tight text-white">
                   REX<span className="text-primary">AUTO</span>
                 </span>
-              </a>
+              </div>
             </Link>
             <p className="text-zinc-400 text-sm leading-relaxed">
               Nationwide supplier specializing in high-quality used and rebuilt engines and transmissions. Dependable parts delivered quickly.
@@ -34,7 +34,7 @@ export default function Footer() {
           <div>
             <h4 className="font-display font-semibold text-white mb-4">Quick Links</h4>
             <ul className="space-y-2">
-              <li><Link href="/" className="text-zinc-400 hover:text-primary transition-colors text-sm">Home</Link></li>
+              <li><Link href="/"><span className="text-zinc-400 hover:text-primary transition-colors text-sm cursor-pointer">Home</span></Link></li>
               <li><a href="#about" className="text-zinc-400 hover:text-primary transition-colors text-sm">About RAP</a></li>
               <li><a href="#inventory" className="text-zinc-400 hover:text-primary transition-colors text-sm">Our Inventory</a></li>
               {isAdmin && (

@@ -21,28 +21,28 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link href="/">
-            <a className="flex items-center gap-2 group">
+            <div className="flex items-center gap-2 group cursor-pointer">
               <div className="bg-primary p-2 rounded-lg group-hover:scale-105 transition-transform">
                 <Wrench className="w-6 h-6 text-white" />
               </div>
               <span className="font-display font-bold text-2xl tracking-tight text-white">
                 REX<span className="text-primary">AUTO</span>
               </span>
-            </a>
+            </div>
           </Link>
 
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center space-x-8">
             {navLinks.map((link) => (
               <Link key={link.name} href={link.href}>
-                <a
-                  className={`text-sm font-medium transition-colors hover:text-primary ${
+                <span
+                  className={`text-sm font-medium transition-colors hover:text-primary cursor-pointer ${
                     location === link.href ? "text-primary" : "text-zinc-400"
                   }`}
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {link.name}
-                </a>
+                </span>
               </Link>
             ))}
             <Button className="bg-primary text-white hover:bg-primary/90 font-semibold" data-testid="button-get-quote-nav">
@@ -67,12 +67,12 @@ export default function Navbar() {
           <div className="md:hidden py-4 border-t border-white/10 space-y-4">
             {navLinks.map((link) => (
               <Link key={link.name} href={link.href}>
-                <a
-                  className="block px-4 py-2 text-base font-medium text-zinc-400 hover:text-white hover:bg-white/5 rounded-md"
+                <span
+                  className="block px-4 py-2 text-base font-medium text-zinc-400 hover:text-white hover:bg-white/5 rounded-md cursor-pointer"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {link.name}
-                </a>
+                </span>
               </Link>
             ))}
             <div className="px-4 pt-2">
