@@ -1,6 +1,6 @@
-import { Wrench, Phone, Mail, MapPin, LogOut } from "lucide-react";
+import { Phone, Mail, MapPin, LogOut } from "lucide-react";
 import { Link, useLocation } from "wouter";
-import { Button } from "@/components/ui/button";
+import logo from "@/assets/logo-removebg-preview_1772118055779.png";
 
 export default function Footer() {
   const [, setLocation] = useLocation();
@@ -18,12 +18,11 @@ export default function Footer() {
           <div className="space-y-4">
             <Link href="/">
               <div className="flex items-center gap-2 cursor-pointer group">
-                <div className="bg-primary p-1.5 rounded-md">
-                  <Wrench className="w-5 h-5 text-white" />
-                </div>
-                <span className="font-display font-bold text-xl tracking-tight text-white">
-                  REX<span className="text-primary">AUTO</span>
-                </span>
+                <img 
+                  src={logo} 
+                  alt="Rex Auto Parts Logo" 
+                  className="h-12 w-auto object-contain brightness-110" 
+                />
               </div>
             </Link>
             <p className="text-zinc-400 text-sm leading-relaxed">

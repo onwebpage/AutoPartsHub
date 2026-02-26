@@ -1,7 +1,8 @@
 import { Link, useLocation } from "wouter";
-import { Wrench, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import logo from "@/assets/logo-removebg-preview_1772118055779.png";
 
 export default function Navbar() {
   const [location] = useLocation();
@@ -22,12 +23,11 @@ export default function Navbar() {
           {/* Logo */}
           <Link href="/">
             <div className="flex items-center gap-2 group cursor-pointer">
-              <div className="bg-primary p-2 rounded-lg group-hover:scale-105 transition-transform">
-                <Wrench className="w-6 h-6 text-white" />
-              </div>
-              <span className="font-display font-bold text-2xl tracking-tight text-white">
-                REX<span className="text-primary">AUTO</span>
-              </span>
+              <img 
+                src={logo} 
+                alt="Rex Auto Parts Logo" 
+                className="h-14 w-auto object-contain brightness-110 group-hover:scale-105 transition-transform" 
+              />
             </div>
           </Link>
 
