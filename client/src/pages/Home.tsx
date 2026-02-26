@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -8,6 +9,7 @@ import heroEngine from "@/assets/images/hero-engine-v2.png";
 import warehouse from "@/assets/images/warehouse.jpg";
 
 export default function Home() {
+  const [, setLocation] = useLocation();
   const [isSearching, setIsSearching] = useState(false);
   const [searchStep, setSearchStep] = useState(0);
   const [formData, setFormData] = useState({
@@ -243,7 +245,7 @@ export default function Home() {
                           <div className="pt-4 space-y-3">
                             <Button 
                               className="w-full bg-white text-black hover:bg-zinc-200 h-12 font-bold rounded-xl"
-                              onClick={() => window.location.href = "#"}
+                              onClick={() => setLocation("/inventory")}
                             >
                               VIEW MATCHING PARTS
                             </Button>
