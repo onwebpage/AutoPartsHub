@@ -3,10 +3,24 @@ import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ShieldCheck, Truck, Clock, Wrench, Search, Star, PackageSearch, ArrowRight, CheckCircle2, Loader2 } from "lucide-react";
+import { ShieldCheck, Truck, Clock, Wrench, Search, Star, PackageSearch, ArrowRight, CheckCircle2, Loader2, Quote } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import heroEngine from "@/assets/images/hero-engine-v2.png";
 import warehouse from "@/assets/images/warehouse.jpg";
+
+const REVIEWS = [
+  { name: "Daniel H.", location: "Texas", text: "I ordered a rebuilt engine from Rex Auto Parts (PartsRAP) and what really stood out was the FREE shipping. The engine arrived in just 3 business days, securely packed and exactly as described. Honest pricing and no hidden charges. Highly recommend!" },
+  { name: "Marcus L.", location: "Florida", text: "PartsRAP made the whole process simple. I purchased a used transmission and they shipped it FREE to my shop in 4 business days. The quality was excellent and my customer’s car is running perfectly. Definitely ordering again from Rex Auto Parts." },
+  { name: "Steven K.", location: "Georgia", text: "Rex Auto Parts delivered my engine within 3 days with FREE nationwide shipping. No delays, no excuses. Everything matched the VIN and fit perfectly. Very professional team." },
+  { name: "Anthony R.", location: "California", text: "I’ve dealt with many suppliers, but PartsRAP stands out. Transparent pricing, FREE delivery, and fast dispatch. My rebuilt transmission came well wrapped and ready to install. Smooth transaction from start to finish." },
+  { name: "Brian M.", location: "Alabama", text: "Ordered a low-mileage used engine from Rex Auto Parts. They confirmed compatibility before shipping and delivered it FREE within 4 business days. Excellent communication and solid quality." },
+  { name: "Carlos D.", location: "Arizona", text: "PartsRAP saved me time and money. FREE shipping on a transmission is a big deal. Delivered fast, installed same week, and no issues at all. Highly trustworthy company." },
+  { name: "Kevin S.", location: "North Carolina", text: "Rex Auto Parts is now my go-to supplier. I run a repair shop and their FREE nationwide shipping plus quick 3–4 day delivery helps me keep my customers happy. Great engines and transmissions." },
+  { name: "Michael T.", location: "New York", text: "I was skeptical buying an engine online, but PartsRAP exceeded expectations. FREE shipping, fair pricing, and fast delivery. The engine runs like new. 100% satisfied." },
+  { name: "Jessica M.", location: "Texas", text: "I ordered a rebuilt engine from Rex Auto Parts (PartsRAP) and I couldn’t be happier. They explained everything clearly, confirmed fitment, and shipped it FREE. It arrived in just 3 business days. Smooth, professional service!" },
+  { name: "Ashley R.", location: "Florida", text: "PartsRAP made buying a transmission stress-free. FREE shipping was a huge plus, and it was delivered in 4 business days exactly as promised. Great communication and honest pricing." },
+  { name: "Samantha L.", location: "Georgia", text: "I don’t usually buy major car parts online, but Rex Auto Parts earned my trust. My used engine arrived quickly with FREE nationwide delivery. Everything matched perfectly and my mechanic approved the quality." },
+];
 
 export default function Home() {
   const [, setLocation] = useLocation();
@@ -115,6 +129,30 @@ export default function Home() {
                     <p className="text-white font-bold leading-none">Fast Shipping</p>
                     <p className="text-xs text-zinc-500 mt-1">Nationwide Delivery</p>
                   </div>
+                </div>
+              </div>
+
+              {/* Infinite Review Marquee */}
+              <div className="relative py-4 mt-8 w-screen left-1/2 -translate-x-1/2 overflow-hidden border-y border-white/5 bg-zinc-950/50 backdrop-blur-sm group">
+                <div className="flex animate-marquee gap-8 whitespace-nowrap items-center">
+                  {[...REVIEWS, ...REVIEWS].map((review, i) => (
+                    <div 
+                      key={i} 
+                      className="inline-flex items-center gap-4 bg-zinc-900/40 border border-white/5 rounded-2xl p-4 px-6 min-w-[400px]"
+                    >
+                      <div className="flex flex-col">
+                        <div className="flex items-center gap-1 mb-1">
+                          {[...Array(5)].map((_, i) => (
+                            <Star key={i} className="w-3 h-3 fill-yellow-500 text-yellow-500" />
+                          ))}
+                        </div>
+                        <p className="text-sm text-zinc-300 italic line-clamp-2">"{review.text}"</p>
+                        <p className="text-xs font-bold text-white mt-2">
+                          {review.name} <span className="text-zinc-500 font-normal"> – {review.location}</span>
+                        </p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
