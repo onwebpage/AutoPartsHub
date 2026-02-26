@@ -33,6 +33,16 @@ const inventory = [
 
 export default function Inventory() {
   const [filter, setFilter] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredInventory = inventory.filter(item => {
+    const matchesFilter = filter === "All" || item.type === filter.replace(/s$/, ''); // Basic singular/plural matching
+    const searchLower = searchQuery.toLowerCase();
+    const matchesSearch = item.name.toLowerCase().includes(searchLower) || 
+                         item.vehicle.toLowerCase().includes(searchLower) ||
+                         item.type.toLowerCase().includes(searchLower);
+    return matchesFilter && matchesSearch;
+  });
 
   return (
     <div className="min-h-screen pt-32 pb-20 bg-black selection:bg-primary/30">
@@ -73,6 +83,8 @@ export default function Inventory() {
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500 group-focus-within:text-primary transition-colors" />
               <Input 
                 placeholder="Search Year, Make, Model..." 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 className="bg-zinc-900/50 backdrop-blur-xl border-white/10 pl-12 text-white h-14 rounded-2xl focus:ring-primary/20 transition-all placeholder:text-zinc-600"
               />
             </div>
@@ -108,13 +120,14 @@ export default function Inventory() {
 
         {/* Inventory Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
-          <AnimatePresence>
-            {inventory.map((item, idx) => (
+          <AnimatePresence mode="popLayout">
+            {filteredInventory.map((item, idx) => (
               <motion.div
                 key={item.id}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.1 }}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.3 }}
                 layout
               >
                 <Card className="group relative bg-zinc-900/40 backdrop-blur-sm border-white/5 overflow-hidden transition-all duration-500 hover:border-primary/40 hover:bg-zinc-900/60 shadow-2xl">
@@ -209,6 +222,27 @@ export default function Inventory() {
             ))}
           </AnimatePresence>
         </div>
+
+        {filteredInventory.length === 0 && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="py-24 text-center space-y-4"
+          >
+            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-zinc-900 border border-white/5 mb-4">
+              <Package className="w-10 h-10 text-zinc-700" />
+            </div>
+            <h3 className="text-2xl font-display font-bold text-white">No parts found</h3>
+            <p className="text-zinc-500 max-w-md mx-auto">We couldn't find any parts matching your current search or filter. Try adjusting your criteria or contact our sourcing team.</p>
+            <Button 
+              variant="link" 
+              onClick={() => { setFilter("All"); setSearchQuery(""); }}
+              className="text-primary font-bold uppercase tracking-widest text-xs"
+            >
+              Reset all filters
+            </Button>
+          </motion.div>
+        )}
 
         {/* Premium Footer Info */}
         <div className="mt-24 py-16 border-t border-white/5 flex flex-col items-center text-center space-y-8">
