@@ -2,133 +2,132 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { ShieldCheck, Truck, Clock, Wrench, Search, Star, PackageSearch } from "lucide-react";
-import heroEngine from "@/assets/images/hero-engine.jpg";
+import { ShieldCheck, Truck, Clock, Wrench, Search, Star, PackageSearch, ArrowRight, CheckCircle2 } from "lucide-react";
+import heroEngine from "@/assets/images/hero-engine-v2.png";
 import warehouse from "@/assets/images/warehouse.jpg";
 
 export default function Home() {
   return (
-    <div className="w-full">
+    <div className="w-full bg-zinc-950">
       {/* HERO SECTION */}
-      <section className="relative min-h-[90vh] flex items-center pt-20 pb-32 overflow-hidden">
+      <section className="relative min-h-screen flex items-center pt-20 pb-32 overflow-hidden">
         {/* Background Image & Overlay */}
         <div className="absolute inset-0 z-0">
           <img 
             src={heroEngine} 
             alt="Car Engine Bay" 
-            className="w-full h-full object-cover object-center opacity-40"
+            className="w-full h-full object-cover object-center opacity-60 scale-105 animate-slow-zoom"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/95 to-background/50" />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/80 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-zinc-950/40" />
+          {/* Animated decorative elements */}
+          <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/10 blur-[120px] rounded-full animate-pulse" />
         </div>
 
         <div className="container relative z-10 mx-auto px-4 md:px-6">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+          <div className="grid lg:grid-cols-12 gap-12 items-center">
             {/* Hero Content */}
-            <div className="space-y-8 max-w-2xl">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-sm font-medium text-zinc-300">
-                <span className="flex h-2 w-2 rounded-full bg-primary animate-pulse" />
-                Over 70+ Trusted Salvage Yards Nationwide
+            <div className="lg:col-span-7 space-y-8">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-sm font-semibold text-primary animate-in fade-in slide-in-from-left duration-700">
+                <span className="flex h-2 w-2 rounded-full bg-primary animate-ping" />
+                Trusted by 70+ Salvage Yards Nationwide
               </div>
               
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-extrabold leading-[1.1] text-white">
-                Find the Right <span className="text-primary">Parts.</span><br />
-                Right <span className="text-gradient">Now.</span>
+              <h1 className="text-6xl md:text-7xl lg:text-8xl font-display font-black leading-[1] text-white tracking-tight animate-in fade-in slide-in-from-left duration-1000 delay-150">
+                Premium Parts.<br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-orange-400">Zero Compromise.</span>
               </h1>
               
-              <p className="text-lg md:text-xl text-zinc-400 leading-relaxed max-w-xl">
-                Nationwide supplier specializing in high-quality used and rebuilt engines and transmissions. Competitive pricing without compromising quality.
+              <p className="text-xl md:text-2xl text-zinc-400 leading-relaxed max-w-xl animate-in fade-in slide-in-from-left duration-1000 delay-300">
+                Your direct source for high-performance used and rebuilt engines. We bridge the gap between salvage and superior.
               </p>
 
-              <div className="flex flex-wrap items-center gap-6 text-sm font-medium text-zinc-300">
-                <div className="flex items-center gap-2">
-                  <ShieldCheck className="w-5 h-5 text-primary" />
-                  <span>90-Day Returns</span>
+              <div className="flex flex-wrap items-center gap-8 pt-4 animate-in fade-in slide-in-from-left duration-1000 delay-500">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-zinc-900 border border-white/5">
+                    <ShieldCheck className="w-6 h-6 text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-white font-bold leading-none">90-Day Returns</p>
+                    <p className="text-xs text-zinc-500 mt-1">Guaranteed Satisfaction</p>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Truck className="w-5 h-5 text-primary" />
-                  <span>Free Shipping Available</span>
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-zinc-900 border border-white/5">
+                    <Truck className="w-6 h-6 text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-white font-bold leading-none">Fast Shipping</p>
+                    <p className="text-xs text-zinc-500 mt-1">Nationwide Delivery</p>
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Search Form */}
-            <div className="relative w-full max-w-md mx-auto lg:ml-auto glass-panel p-6 sm:p-8 rounded-2xl shadow-2xl">
-              <div className="absolute -top-3 -right-3 bg-primary text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg transform rotate-3">
-                FAST QUOTE
-              </div>
-              
-              <div className="mb-6">
-                <h3 className="text-2xl font-display font-bold text-white mb-2">Find Your Part</h3>
-                <p className="text-zinc-400 text-sm">Enter vehicle details to search our nationwide network.</p>
-              </div>
-
-              <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="year" className="text-zinc-300">Year</Label>
-                    <select id="year" className="flex h-10 w-full rounded-md border border-input bg-background/50 px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 text-white" data-testid="select-year">
-                      <option value="">Select Year</option>
-                      {[...Array(30)].map((_, i) => (
-                        <option key={i} value={2024 - i}>{2024 - i}</option>
-                      ))}
-                    </select>
+            {/* Search Form Card */}
+            <div className="lg:col-span-5 relative animate-in fade-in zoom-in duration-1000 delay-500">
+              <div className="absolute -inset-0.5 bg-gradient-to-br from-primary/50 to-orange-500/30 rounded-3xl blur opacity-30 group-hover:opacity-100 transition duration-1000"></div>
+              <div className="relative glass-panel p-8 md:p-10 rounded-3xl border border-white/10 shadow-2xl bg-zinc-900/40 backdrop-blur-xl">
+                <div className="flex items-center justify-between mb-8">
+                  <div>
+                    <h3 className="text-2xl font-display font-bold text-white mb-1">Instant Inventory Search</h3>
+                    <p className="text-zinc-400 text-sm italic">Get a quote in 60 seconds or less</p>
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="make" className="text-zinc-300">Make</Label>
-                    <select id="make" className="flex h-10 w-full rounded-md border border-input bg-background/50 px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 text-white" data-testid="select-make">
-                      <option value="">Select Make</option>
-                      <option value="ford">Ford</option>
-                      <option value="chevrolet">Chevrolet</option>
-                      <option value="toyota">Toyota</option>
-                      <option value="honda">Honda</option>
-                      <option value="bmw">BMW</option>
-                    </select>
+                  <div className="hidden sm:flex h-12 w-12 rounded-2xl bg-primary/10 items-center justify-center border border-primary/20">
+                    <Search className="w-6 h-6 text-primary" />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="model" className="text-zinc-300">Model</Label>
-                    <Input id="model" placeholder="e.g. F-150" className="bg-background/50 border-input text-white" data-testid="input-model" />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="part" className="text-zinc-300">Part</Label>
-                    <select id="part" className="flex h-10 w-full rounded-md border border-input bg-background/50 px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 text-white" data-testid="select-part">
-                      <option value="">Select Part</option>
-                      <option value="engine">Engine Assembly</option>
-                      <option value="transmission">Transmission</option>
-                      <option value="axle">Axle Assembly</option>
-                      <option value="transfer_case">Transfer Case</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="details" className="text-zinc-300">Part Details / Size / Vin (Optional)</Label>
-                  <Textarea id="details" placeholder="e.g. 5.0L V8, 4WD..." className="bg-background/50 border-input text-white resize-none" rows={2} data-testid="input-details" />
-                </div>
-
-                <div className="pt-2 border-t border-white/10 mt-2">
-                  <p className="text-xs text-zinc-500 mb-3 uppercase tracking-wider font-semibold">Contact Info</p>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
+                  <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Input id="name" placeholder="Full Name" className="bg-background/50 border-input text-white" data-testid="input-name" />
+                      <Label htmlFor="year" className="text-xs uppercase tracking-widest font-bold text-zinc-500 ml-1">Year</Label>
+                      <select id="year" className="flex h-12 w-full rounded-xl border border-white/10 bg-zinc-950/50 px-4 py-2 text-sm text-white focus:ring-2 focus:ring-primary/50 transition-all outline-none" data-testid="select-year">
+                        <option value="">Select Year</option>
+                        {[...Array(30)].map((_, i) => (
+                          <option key={i} value={2024 - i}>{2024 - i}</option>
+                        ))}
+                      </select>
                     </div>
                     <div className="space-y-2">
-                      <Input id="phone" type="tel" placeholder="Phone Number" className="bg-background/50 border-input text-white" data-testid="input-phone" />
+                      <Label htmlFor="make" className="text-xs uppercase tracking-widest font-bold text-zinc-500 ml-1">Make</Label>
+                      <select id="make" className="flex h-12 w-full rounded-xl border border-white/10 bg-zinc-950/50 px-4 py-2 text-sm text-white focus:ring-2 focus:ring-primary/50 transition-all outline-none" data-testid="select-make">
+                        <option value="">Select Make</option>
+                        <option value="ford">Ford</option>
+                        <option value="chevrolet">Chevrolet</option>
+                        <option value="toyota">Toyota</option>
+                        <option value="honda">Honda</option>
+                        <option value="bmw">BMW</option>
+                      </select>
                     </div>
                   </div>
-                  <div className="space-y-2 mt-4">
-                    <Input id="email" type="email" placeholder="Email Address" className="bg-background/50 border-input text-white" data-testid="input-email" />
-                  </div>
-                </div>
 
-                <Button className="w-full bg-primary hover:bg-primary/90 text-white h-12 text-lg font-bold mt-4" data-testid="button-find-part">
-                  <Search className="w-5 h-5 mr-2" />
-                  Find My Part
-                </Button>
-              </form>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="model" className="text-xs uppercase tracking-widest font-bold text-zinc-500 ml-1">Model</Label>
+                      <Input id="model" placeholder="e.g. F-150" className="h-12 rounded-xl bg-zinc-950/50 border-white/10 text-white" data-testid="input-model" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="part" className="text-xs uppercase tracking-widest font-bold text-zinc-500 ml-1">Part Category</Label>
+                      <select id="part" className="flex h-12 w-full rounded-xl border border-white/10 bg-zinc-950/50 px-4 py-2 text-sm text-white focus:ring-2 focus:ring-primary/50 transition-all outline-none" data-testid="select-part">
+                        <option value="">Select Part</option>
+                        <option value="engine">Engine Assembly</option>
+                        <option value="transmission">Transmission</option>
+                        <option value="axle">Axle Assembly</option>
+                        <option value="transfer_case">Transfer Case</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="pt-4 mt-4 border-t border-white/5">
+                    <Button className="w-full bg-primary hover:bg-primary/90 text-white h-14 text-lg font-black rounded-xl shadow-xl shadow-primary/20 group" data-testid="button-find-part">
+                      SEARCH INVENTORY
+                      <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                    </Button>
+                    <p className="text-center text-[10px] text-zinc-500 mt-4 uppercase tracking-[0.2em]">Verified Inventory • secure checkouts</p>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         </div>
