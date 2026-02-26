@@ -21,7 +21,7 @@ export default function Footer() {
                 <img 
                   src={logo} 
                   alt="Rex Auto Parts Logo" 
-                  className="h-12 w-auto object-contain brightness-110" 
+                  className="h-20 w-auto object-contain brightness-110" 
                 />
               </div>
             </Link>
