@@ -27,6 +27,32 @@ export default function Home() {
     setSearchStep(1);
   };
 
+  const getMatchingCount = () => {
+    // This is a simplified matching logic to show the user real results
+    // In a real app, this would be an API call
+    const inventory = [
+      { name: "V8 Engine Assembly", vehicle: "2018 Ford F-150", type: "Engine" },
+      { name: "Automatic Transmission", vehicle: "2020 Toyota Camry", type: "Transmission" },
+      { name: "Rear Axle Assembly", vehicle: "2019 Jeep Wrangler", type: "Axle" },
+      { name: "Turbocharger Unit", vehicle: "2021 BMW 330i", type: "Engine Part" },
+      { name: "5.3L V8 Engine", vehicle: "2015 Chevrolet Silverado", type: "Engine" },
+      { name: "CVT Transmission", vehicle: "2019 Honda Civic", type: "Transmission" },
+    ];
+
+    const searchLower = `${formData.year} ${formData.make} ${formData.model}`.toLowerCase();
+    const partType = formData.part.toLowerCase().replace(/_/g, ' ');
+
+    return inventory.filter(item => {
+      const matchesVehicle = item.vehicle.toLowerCase().includes(formData.make.toLowerCase()) && 
+                             item.vehicle.toLowerCase().includes(formData.model.toLowerCase());
+      const matchesPart = item.type.toLowerCase().includes(partType) || 
+                          item.name.toLowerCase().includes(partType);
+      return matchesVehicle || matchesPart;
+    }).length;
+  };
+
+  const matchingCount = getMatchingCount();
+
   useEffect(() => {
     if (isSearching && searchStep < 4) {
       const timer = setTimeout(() => {
@@ -234,32 +260,65 @@ export default function Home() {
                           animate={{ scale: 1, opacity: 1 }}
                           className="space-y-6"
                         >
-                          <div className="w-20 h-20 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto border border-emerald-500/30">
-                            <CheckCircle2 className="w-10 h-10 text-emerald-500" />
-                          </div>
-                          <div className="space-y-2">
-                            <h3 className="text-3xl font-display font-bold text-white">Part Found!</h3>
-                            <p className="text-emerald-400 font-medium">We found 3 matching results for your {formData.make} {formData.model}.</p>
-                            <p className="text-zinc-400 text-sm">Estimated Price: <span className="text-white font-bold">$1,850 - $2,400</span></p>
-                          </div>
-                          <div className="pt-4 space-y-3">
-                            <Button 
-                              className="w-full bg-white text-black hover:bg-zinc-200 h-12 font-bold rounded-xl"
-                              onClick={() => setLocation("/inventory")}
-                            >
-                              VIEW MATCHING PARTS
-                            </Button>
-                            <Button 
-                              variant="ghost"
-                              className="w-full text-zinc-400 hover:text-white"
-                              onClick={() => {
-                                setIsSearching(false);
-                                setSearchStep(0);
-                              }}
-                            >
-                              New Search
-                            </Button>
-                          </div>
+                          {matchingCount > 0 ? (
+                            <>
+                              <div className="w-20 h-20 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto border border-emerald-500/30">
+                                <CheckCircle2 className="w-10 h-10 text-emerald-500" />
+                              </div>
+                              <div className="space-y-2">
+                                <h3 className="text-3xl font-display font-bold text-white">Part Found!</h3>
+                                <p className="text-emerald-400 font-medium">We found {matchingCount} matching {matchingCount === 1 ? 'result' : 'results'} for your {formData.make} {formData.model}.</p>
+                                <p className="text-zinc-400 text-sm">Estimated Price: <span className="text-white font-bold">$1,850 - $2,400</span></p>
+                              </div>
+                              <div className="pt-4 space-y-3">
+                                <Button 
+                                  className="w-full bg-white text-black hover:bg-zinc-200 h-12 font-bold rounded-xl"
+                                  onClick={() => setLocation(`/inventory?q=${encodeURIComponent(`${formData.make} ${formData.model}`)}&type=${formData.part}`)}
+                                >
+                                  VIEW MATCHING PARTS
+                                </Button>
+                                <Button 
+                                  variant="ghost"
+                                  className="w-full text-zinc-400 hover:text-white"
+                                  onClick={() => {
+                                    setIsSearching(false);
+                                    setSearchStep(0);
+                                  }}
+                                >
+                                  New Search
+                                </Button>
+                              </div>
+                            </>
+                          ) : (
+                            <>
+                              <div className="w-20 h-20 bg-red-500/20 rounded-full flex items-center justify-center mx-auto border border-red-500/30">
+                                <PackageSearch className="w-10 h-10 text-red-500" />
+                              </div>
+                              <div className="space-y-2">
+                                <h3 className="text-3xl font-display font-bold text-white">No Matches Found</h3>
+                                <p className="text-zinc-400">We couldn't find an exact match for a {formData.year} {formData.make} {formData.model} {formData.part.replace('_', ' ')} in our current local stock.</p>
+                                <p className="text-zinc-500 text-sm">Our sourcing team can still help you find this part within our nationwide network.</p>
+                              </div>
+                              <div className="pt-4 space-y-3">
+                                <Button 
+                                  className="w-full bg-primary text-white hover:bg-primary/90 h-12 font-bold rounded-xl"
+                                  onClick={() => setLocation("/inventory")}
+                                >
+                                  BROWSE ALL INVENTORY
+                                </Button>
+                                <Button 
+                                  variant="ghost"
+                                  className="w-full text-zinc-400 hover:text-white"
+                                  onClick={() => {
+                                    setIsSearching(false);
+                                    setSearchStep(0);
+                                  }}
+                                >
+                                  Try Different Search
+                                </Button>
+                              </div>
+                            </>
+                          )}
                         </motion.div>
                       )}
                     </motion.div>

@@ -35,8 +35,13 @@ const inventory = [
 ];
 
 export default function Inventory() {
-  const [filter, setFilter] = useState("All");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [locationObj] = useLocation();
+  const searchParams = new URLSearchParams(window.location.search);
+  const initialQuery = searchParams.get("q") || "";
+  const initialType = searchParams.get("type") || "All";
+
+  const [filter, setFilter] = useState(initialType === "All" ? "All" : initialType.charAt(0).toUpperCase() + initialType.slice(1).toLowerCase().replace(/_/g, ' '));
+  const [searchQuery, setSearchQuery] = useState(initialQuery);
   const [showRecommendations, setShowRecommendations] = useState(false);
   const [, setLocation] = useLocation();
   const searchRef = useRef<HTMLDivElement>(null);
