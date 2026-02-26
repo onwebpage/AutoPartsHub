@@ -32,11 +32,11 @@
   --font-display: 'Outfit', sans-serif;
 
   --animate-slow-zoom: slow-zoom 20s ease-in-out infinite alternate;
+}
 
-  @keyframes slow-zoom {
-    from { transform: scale(1); }
-    to { transform: scale(1.1); }
-  }
+@keyframes slow-zoom {
+  from { transform: scale(1); }
+  to { transform: scale(1.1); }
 }
 
 /* DARK MODE ONLY FOR THIS DESIGN */
