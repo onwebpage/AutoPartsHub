@@ -302,7 +302,7 @@ export default function Home() {
                                 <h3 className="text-3xl font-display font-bold text-white">Part Found!</h3>
                                 <p className="text-emerald-400 font-medium">We found {matchingCount} matching {matchingCount === 1 ? 'result' : 'results'} for your {formData.year} {formData.make} {formData.model}.</p>
                                 {matchingProducts.length > 0 && (
-                                  <p className="text-zinc-400 text-sm">Estimated Price: <span className="text-white font-bold">₹{Math.min(...matchingProducts.map(p => p.price)).toLocaleString()} - ₹{Math.max(...matchingProducts.map(p => p.price)).toLocaleString()}</span></p>
+                                  <p className="text-zinc-400 text-sm">Estimated Price: <span className="text-white font-bold">${Math.min(...matchingProducts.map(p => p.price)).toLocaleString()} - ${Math.max(...matchingProducts.map(p => p.price)).toLocaleString()}</span></p>
                                 )}
                               </div>
                               <div className="pt-4 space-y-3">

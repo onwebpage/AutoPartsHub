@@ -147,7 +147,7 @@ export default function Inventory() {
                     </div>
                     <div className="text-right">
                       <p className="text-2xl font-bold text-white">
-                        ₹{product.price.toLocaleString()}
+                        ${product.price.toLocaleString()}
                       </p>
                     </div>
                   </div>

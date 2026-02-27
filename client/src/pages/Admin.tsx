@@ -229,7 +229,7 @@ export default function Admin() {
                               <div className="text-xs text-zinc-500">{part.details}</div>
                             </TableCell>
                             <TableCell className="text-zinc-300">{part.type}</TableCell>
-                            <TableCell className="text-zinc-300">₹{part.price.toLocaleString()}</TableCell>
+                            <TableCell className="text-zinc-300">${part.price.toLocaleString()}</TableCell>
                             <TableCell>
                               <Badge 
                                 variant="outline" 

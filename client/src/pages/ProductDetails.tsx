@@ -96,7 +96,7 @@ export default function ProductDetails({ params }: { params: { id: string } }) {
               <div className="space-y-1">
                 <p className="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em]">Verified Price</p>
                 <div className="flex items-baseline gap-2">
-                  <span className="text-2xl font-bold text-primary">₹</span>
+                  <span className="text-2xl font-bold text-primary">$</span>
                   <span className="text-6xl font-display font-black text-white tracking-tighter">
                     {product.price.toLocaleString()}
                   </span>
@@ -161,7 +161,7 @@ Product ID: ${product.partId}
 Type: ${product.type}
 Vehicle: ${product.year} ${product.make} ${product.model}
 Details: ${product.details}
-Price: ₹${product.price.toLocaleString()}
+Price: $${product.price.toLocaleString()}
 Status: ${product.status}
 Protection: ${product.protection}
 Location: ${product.location}
