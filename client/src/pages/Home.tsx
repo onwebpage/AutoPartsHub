@@ -102,13 +102,9 @@ export default function Home() {
     <div className="w-full bg-zinc-950">
       {/* HERO SECTION */}
       <section className="relative min-h-screen flex items-center pt-20 pb-32 overflow-hidden">
-        {/* Background Image & Overlay */}
+        {/* Background Overlay */}
         <div className="absolute inset-0 z-0">
-          <img 
-            src={heroEngine} 
-            alt="Car Engine Bay" 
-            className="w-full h-full object-cover object-center opacity-60 scale-105 animate-slow-zoom"
-          />
+          <div className="absolute inset-0 bg-zinc-950" />
           <div className="absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/80 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-zinc-950/40" />
           {/* Animated decorative elements */}
