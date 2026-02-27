@@ -627,10 +627,10 @@ export default function Home() {
       {/* Reviews Modal */}
       <Dialog open={showAllReviews} onOpenChange={setShowAllReviews}>
         <DialogContent className="max-w-4xl max-h-[90vh] p-0 bg-white overflow-hidden flex flex-col">
-          <DialogHeader className="p-8 pb-4 border-b">
+          <DialogHeader className="p-8 pb-4 border-b shrink-0">
             <DialogTitle className="text-3xl font-display font-bold text-zinc-900">All Reviews</DialogTitle>
           </DialogHeader>
-          <ScrollArea className="flex-1 p-8">
+          <div className="flex-1 overflow-y-auto p-8">
             <div className="grid gap-6">
               {REVIEWS.map((review, i) => (
                 <div key={i} className="bg-zinc-50 rounded-lg p-8 border border-zinc-100">
@@ -652,7 +652,7 @@ export default function Home() {
                 </div>
               ))}
             </div>
-          </ScrollArea>
+          </div>
         </DialogContent>
       </Dialog>
 
