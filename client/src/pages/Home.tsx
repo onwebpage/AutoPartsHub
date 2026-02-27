@@ -36,7 +36,7 @@ export default function Home() {
   });
 
   // Fetch real products from database
-  const { data: products = [] } = useQuery<Product[]>({
+  const { data: remoteProducts = [] } = useQuery<Product[]>({
     queryKey: ['products'],
     queryFn: async () => {
       const response = await fetch('/api/products');
@@ -44,6 +44,79 @@ export default function Home() {
       return response.json();
     },
   });
+
+  const mockProducts: Product[] = [
+    {
+      id: "1",
+      partId: "ENG-001",
+      type: "engine",
+      year: 2022,
+      make: "Ford",
+      model: "F-150",
+      details: "5.0L V8 Coyote Engine - Low Mileage",
+      price: 450000,
+      status: "In Stock",
+      customer: "Pending",
+      imageUrl: "https://images.unsplash.com/photo-1597766333691-b159b40f8cfc?auto=format&fit=crop&q=80&w=800",
+      protection: "90-Day Return",
+      location: "Texas Warehouse",
+      description: "Tested and verified performance engine.",
+      createdAt: new Date()
+    },
+    {
+      id: "2",
+      partId: "TRN-002",
+      type: "transmission",
+      year: 2021,
+      make: "Chevrolet",
+      model: "Silverado",
+      details: "10-Speed Automatic Transmission",
+      price: 280000,
+      status: "In Stock",
+      customer: "Pending",
+      imageUrl: "https://images.unsplash.com/photo-1635773054018-22c48472944a?auto=format&fit=crop&q=80&w=800",
+      protection: "90-Day Return",
+      location: "Florida Hub",
+      description: "Smooth shifting transmission, fully inspected.",
+      createdAt: new Date()
+    },
+    {
+      id: "3",
+      partId: "CHS-003",
+      type: "chassis",
+      year: 2023,
+      make: "Toyota",
+      model: "Tacoma",
+      details: "Reinforced Chassis Plate - OEM Standard",
+      price: 45000,
+      status: "In Stock",
+      customer: "Pending",
+      imageUrl: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=800",
+      protection: "90-Day Return",
+      location: "California Center",
+      description: "High-grade steel chassis plate for heavy duty use.",
+      createdAt: new Date()
+    },
+    {
+      id: "4",
+      partId: "ENG-004",
+      type: "engine",
+      year: 2020,
+      make: "Honda",
+      model: "Civic Type R",
+      details: "2.0L Turbocharged K20C1 Engine",
+      price: 520000,
+      status: "In Stock",
+      customer: "Pending",
+      imageUrl: "https://images.unsplash.com/photo-1486006920555-c77dcf18193c?auto=format&fit=crop&q=80&w=800",
+      protection: "90-Day Return",
+      location: "Georgia Warehouse",
+      description: "High performance racing engine in excellent condition.",
+      createdAt: new Date()
+    }
+  ];
+
+  const products = [...mockProducts, ...remoteProducts];
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();

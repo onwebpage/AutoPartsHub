@@ -17,14 +17,152 @@ export default function Inventory() {
   const [searchTerm, setSearchTerm] = useState(initialQuery);
   const [filterType, setFilterType] = useState(initialType);
 
-  const { data: products = [], isLoading } = useQuery<Product[]>({
+  const mockProducts: Product[] = [
+    {
+      id: "1",
+      partId: "ENG-001",
+      type: "engine",
+      year: 2022,
+      make: "Ford",
+      model: "F-150",
+      details: "5.0L V8 Coyote Engine - Low Mileage",
+      price: 450000,
+      status: "In Stock",
+      customer: "Pending",
+      imageUrl: "https://images.unsplash.com/photo-1597766333691-b159b40f8cfc?auto=format&fit=crop&q=80&w=800",
+      protection: "90-Day Return",
+      location: "Texas Warehouse",
+      description: "Tested and verified performance engine.",
+      createdAt: new Date()
+    },
+    {
+      id: "2",
+      partId: "TRN-002",
+      type: "transmission",
+      year: 2021,
+      make: "Chevrolet",
+      model: "Silverado",
+      details: "10-Speed Automatic Transmission",
+      price: 280000,
+      status: "In Stock",
+      customer: "Pending",
+      imageUrl: "https://images.unsplash.com/photo-1635773054018-22c48472944a?auto=format&fit=crop&q=80&w=800",
+      protection: "90-Day Return",
+      location: "Florida Hub",
+      description: "Smooth shifting transmission, fully inspected.",
+      createdAt: new Date()
+    },
+    {
+      id: "3",
+      partId: "CHS-003",
+      type: "chassis",
+      year: 2023,
+      make: "Toyota",
+      model: "Tacoma",
+      details: "Reinforced Chassis Plate - OEM Standard",
+      price: 45000,
+      status: "In Stock",
+      customer: "Pending",
+      imageUrl: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=800",
+      protection: "90-Day Return",
+      location: "California Center",
+      description: "High-grade steel chassis plate for heavy duty use.",
+      createdAt: new Date()
+    },
+    {
+      id: "4",
+      partId: "ENG-004",
+      type: "engine",
+      year: 2020,
+      make: "Honda",
+      model: "Civic Type R",
+      details: "2.0L Turbocharged K20C1 Engine",
+      price: 520000,
+      status: "In Stock",
+      customer: "Pending",
+      imageUrl: "https://images.unsplash.com/photo-1486006920555-c77dcf18193c?auto=format&fit=crop&q=80&w=800",
+      protection: "90-Day Return",
+      location: "Georgia Warehouse",
+      description: "High performance racing engine in excellent condition.",
+      createdAt: new Date()
+    },
+    {
+      id: "5",
+      partId: "TRN-005",
+      type: "transmission",
+      year: 2019,
+      make: "BMW",
+      model: "3 Series",
+      details: "ZF 8HP Automatic Transmission",
+      price: 320000,
+      status: "In Stock",
+      customer: "Pending",
+      imageUrl: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=800",
+      protection: "90-Day Return",
+      location: "New York Hub",
+      description: "Precision engineered ZF transmission for luxury performance.",
+      createdAt: new Date()
+    },
+    {
+      id: "6",
+      partId: "AXL-006",
+      type: "axle",
+      year: 2021,
+      make: "Ford",
+      model: "Super Duty",
+      details: "Dana 60 Front Axle Assembly",
+      price: 180000,
+      status: "In Stock",
+      customer: "Pending",
+      imageUrl: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?auto=format&fit=crop&q=80&w=800",
+      protection: "90-Day Return",
+      location: "Arizona Warehouse",
+      description: "Heavy duty axle for towing and off-road applications.",
+      createdAt: new Date()
+    },
+    {
+      id: "7",
+      partId: "DIF-007",
+      type: "differential",
+      year: 2022,
+      make: "Jeep",
+      model: "Wrangler",
+      details: "Tru-Lok Electronic Locking Differential",
+      price: 85000,
+      status: "In Stock",
+      customer: "Pending",
+      imageUrl: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=800",
+      protection: "90-Day Return",
+      location: "Colorado Hub",
+      description: "Genuine Jeep locking differential for ultimate traction.",
+      createdAt: new Date()
+    },
+    {
+      id: "8",
+      partId: "ENG-008",
+      type: "engine",
+      year: 2018,
+      make: "Toyota",
+      model: "Camry",
+      details: "2.5L 4-Cylinder A25A-FKS Engine",
+      price: 195000,
+      status: "In Stock",
+      customer: "Pending",
+      imageUrl: "https://images.unsplash.com/photo-1597766333691-b159b40f8cfc?auto=format&fit=crop&q=80&w=800",
+      protection: "90-Day Return",
+      location: "Texas Warehouse",
+      description: "Reliable Toyota engine with low verified miles.",
+      createdAt: new Date()
+    }
+  ];
+
+  const { data: remoteProducts = [], isLoading } = useQuery<Product[]>({
     queryKey: ['products'],
     queryFn: async () => {
       const response = await fetch('/api/products');
       if (!response.ok) throw new Error('Failed to fetch products');
       return response.json();
-    },
-  });
+  const products = [...mockProducts, ...remoteProducts];
 
   const filteredProducts = products.filter(product => {
     const searchLower = searchTerm.toLowerCase();
@@ -72,6 +210,7 @@ export default function Inventory() {
             <option value="">All Types</option>
             <option value="engine">Engines</option>
             <option value="transmission">Transmissions</option>
+            <option value="chassis">Chassis Plates</option>
             <option value="axle">Axles</option>
             <option value="differential">Differentials</option>
             <option value="transfer">Transfer Cases</option>
