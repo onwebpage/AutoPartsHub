@@ -57,10 +57,33 @@ const recentActivity = [
 
 export default function Admin() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [activeTab, setActiveTab] = useState<"inventory" | "monitoring" | "security">("inventory");
+  const [activeTab, setActiveTab] = useState<"inventory" | "monitoring" | "security" | "images">("inventory");
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | undefined>();
   const queryClient = useQueryClient();
+
+  const handleImageUpload = async (category: string, file: File) => {
+    const formData = new FormData();
+    formData.append('image', file);
+    formData.append('category', category);
+
+    try {
+      const response = await fetch('/api/category-images', {
+        method: 'POST',
+        body: formData,
+      });
+      
+      if (response.ok) {
+        alert('Image uploaded successfully! Please refresh the homepage to see changes.');
+        setTimeout(() => window.location.reload(), 500);
+      } else {
+        alert('Failed to upload image');
+      }
+    } catch (error) {
+      console.error('Failed to upload image:', error);
+      alert('Failed to upload image');
+    }
+  };
 
   const { data: products = [], isLoading } = useQuery<Product[]>({
     queryKey: ['products'],
@@ -142,6 +165,14 @@ export default function Admin() {
           >
             <Shield className="mr-2 h-4 w-4" />
             Security
+          </Button>
+          <Button 
+            variant="ghost" 
+            className={`justify-start ${activeTab === 'images' ? 'text-white bg-white/5' : 'text-zinc-400 hover:text-white hover:bg-white/5'}`}
+            onClick={() => setActiveTab('images')}
+          >
+            <Package className="mr-2 h-4 w-4" />
+            Category Images
           </Button>
           <div className="h-px bg-white/5 my-2" />
           <Button variant="ghost" className="justify-start text-zinc-400 hover:text-white hover:bg-white/5">
@@ -449,6 +480,48 @@ export default function Admin() {
                     </CardContent>
                   </Card>
                 </div>
+            </div>
+          )}
+
+          {activeTab === 'images' && (
+            <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+              <div>
+                <h1 className="text-3xl font-display font-bold text-white tracking-tight">Category Images</h1>
+                <p className="text-zinc-400">Manage images for the Genuine OEM Parts section.</p>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {['engine', 'transmission', 'axle', 'chassis', 'differential'].map((category) => (
+                  <Card key={category} className="bg-zinc-900 border-white/5">
+                    <CardContent className="p-6">
+                      <div className="aspect-square rounded-xl overflow-hidden border border-white/10 mb-4 bg-zinc-950">
+                        <img 
+                          src={`/images/${category}-1.jpg?t=${Date.now()}`} 
+                          alt={category}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <h3 className="text-lg font-bold text-white capitalize mb-2">{category}s</h3>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        id={`upload-${category}`}
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) handleImageUpload(category, file);
+                        }}
+                      />
+                      <Button 
+                        onClick={() => document.getElementById(`upload-${category}`)?.click()}
+                        className="w-full bg-primary hover:bg-primary/90 text-white"
+                      >
+                        Change Image
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
             </div>
           )}
 

@@ -113,6 +113,34 @@ export async function registerRoutes(
     }
   });
   
+  // Upload category image
+  app.post("/api/category-images", upload.single('image'), async (req, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ message: "No image file provided" });
+      }
+      
+      const category = req.body.category;
+      const fs = await import('fs/promises');
+      const pathModule = await import('path');
+      
+      const uploadPath = req.file.path;
+      const targetPath = pathModule.join(process.cwd(), 'client', 'public', 'images', `${category}-1.jpg`);
+      
+      await fs.copyFile(uploadPath, targetPath);
+      await fs.unlink(uploadPath);
+      
+      // Update version file to bust cache
+      const versionPath = pathModule.join(process.cwd(), 'client', 'src', 'lib', 'imageVersion.ts');
+      await fs.writeFile(versionPath, `export const IMAGE_VERSION = ${Date.now()};\n`);
+      
+      res.json({ message: "Image uploaded successfully", path: `/images/${category}-1.jpg` });
+    } catch (error: any) {
+      console.error('Image upload error:', error);
+      res.status(500).json({ message: error.message || "Failed to upload image" });
+    }
+  });
+  
   // Get reviews for a product
   app.get("/api/products/:id/reviews", async (req, res) => {
     try {

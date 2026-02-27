@@ -11,6 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { ScrollArea } from "@/components/ui/scroll-area";
 import heroEngine from "@/assets/images/hero-engine-v2.png";
 import warehouse from "@/assets/images/warehouse.jpg";
+import { IMAGE_VERSION } from "@/lib/imageVersion";
 
 const REVIEWS = [
   { name: "Hector Velilla", location: "Verified Customer", text: "The shipping is very fast, the item was as described, the customer service is outstanding. took the time/ concern to assist me with the order. I do trust them now and I highly recommend them. Best price I found and I checked quite a few. I would buy from them again." },
@@ -495,7 +496,7 @@ export default function Home() {
             <div className="group cursor-pointer" onClick={() => setLocation("/inventory?type=engine")}>
               <div className="aspect-square rounded-3xl overflow-hidden border border-white/10 mb-6 relative">
                 <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity z-10" />
-                <img src="/images/engine-1.jpg" alt="Engines" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                <img src={`/images/engine-1.jpg?v=${IMAGE_VERSION}`} alt="Engines" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
               </div>
               <h3 className="text-xl font-bold text-white text-center group-hover:text-primary transition-colors">Engines</h3>
             </div>
@@ -503,7 +504,7 @@ export default function Home() {
             <div className="group cursor-pointer" onClick={() => setLocation("/inventory?type=transmission")}>
               <div className="aspect-square rounded-3xl overflow-hidden border border-white/10 mb-6 relative">
                 <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity z-10" />
-                <img src="/images/transmission-1.jpg" alt="Transmissions" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                <img src={`/images/transmission-1.jpg?v=${IMAGE_VERSION}`} alt="Transmissions" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
               </div>
               <h3 className="text-xl font-bold text-white text-center group-hover:text-primary transition-colors">Transmissions</h3>
             </div>
@@ -511,7 +512,7 @@ export default function Home() {
             <div className="group cursor-pointer" onClick={() => setLocation("/inventory?type=axle")}>
               <div className="aspect-square rounded-3xl overflow-hidden border border-white/10 mb-6 relative">
                 <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity z-10" />
-                <img src="/images/axle-1.jpg" alt="Axles" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                <img src={`/images/axle-1.jpg?v=${IMAGE_VERSION}`} alt="Axles" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
               </div>
               <h3 className="text-xl font-bold text-white text-center group-hover:text-primary transition-colors">Axles</h3>
             </div>
@@ -519,7 +520,7 @@ export default function Home() {
             <div className="group cursor-pointer" onClick={() => setLocation("/inventory?type=chassis")}>
               <div className="aspect-square rounded-3xl overflow-hidden border border-white/10 mb-6 relative">
                 <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity z-10" />
-                <img src="/images/chassis-1.jpg" alt="Chassis" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                <img src={`/images/chassis-1.jpg?v=${IMAGE_VERSION}`} alt="Chassis" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
               </div>
               <h3 className="text-xl font-bold text-white text-center group-hover:text-primary transition-colors">Chassis</h3>
             </div>
@@ -527,7 +528,7 @@ export default function Home() {
             <div className="group cursor-pointer" onClick={() => setLocation("/inventory?type=differential")}>
               <div className="aspect-square rounded-3xl overflow-hidden border border-white/10 mb-6 relative">
                 <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity z-10" />
-                <img src="/images/differential-1.jpg" alt="Differentials" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                <img src={`/images/differential-1.jpg?v=${IMAGE_VERSION}`} alt="Differentials" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
               </div>
               <h3 className="text-xl font-bold text-white text-center group-hover:text-primary transition-colors">Differentials</h3>
             </div>
