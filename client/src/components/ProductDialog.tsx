@@ -37,7 +37,10 @@ export function ProductDialog({ open, onOpenChange, product }: ProductDialogProp
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['products'] });
+      queryClient.invalidateQueries({ queryKey: ['product'] });
       onOpenChange(false);
+      setImageFile(null);
+      setImagePreview(null);
     },
   });
 
