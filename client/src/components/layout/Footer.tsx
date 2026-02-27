@@ -82,6 +82,13 @@ export default function Footer() {
           <p className="text-zinc-500 text-xs">
             © {new Date().getFullYear()} Rex Auto Parts (RAP). All rights reserved.
           </p>
+          <div className="flex items-center gap-4 opacity-60 grayscale">
+            <img src="/paymentlogo1-removebg-preview.png" alt="Payment" className="h-6 object-contain" />
+            <img src="/paymentlogo2-removebg-preview.png" alt="Payment" className="h-6 object-contain" />
+            <img src="/paymentlogo3-removebg-preview.png" alt="Payment" className="h-6 object-contain" />
+            <img src="/paymentlogo4-removebg-preview.png" alt="Payment" className="h-6 object-contain" />
+            <img src="/paymentlogo5-removebg-preview.png" alt="Payment" className="h-6 object-contain" />
+          </div>
           <div className="flex gap-4 text-xs text-zinc-500">
             <Link href="/privacy-policy">
               <span className="hover:text-white transition-colors cursor-pointer">Privacy Policy</span>
