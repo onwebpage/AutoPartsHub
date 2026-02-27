@@ -97,10 +97,24 @@ export default function Contact() {
                       </div>
                       <div>
                         <p className="text-sm text-zinc-500 uppercase tracking-widest font-bold">Headquarters</p>
-                        <p className="text-xl text-white font-display font-bold mt-1">Nationwide Network</p>
-                        <p className="text-sm text-zinc-400">70+ Trusted Salvage Yards Across USA</p>
+                        <p className="text-xl text-white font-display font-bold mt-1">977 Heritage Rd</p>
+                        <p className="text-sm text-zinc-400">San Diego, CA 92154</p>
                       </div>
                     </div>
+                  </div>
+                </div>
+
+                <div className="pt-8 border-t border-white/5">
+                  <div className="rounded-xl overflow-hidden border border-white/10">
+                    <iframe
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3361.8!2d-117.0!3d32.55!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzLCsDMzJzAwLjAiTiAxMTfCsDAyJzAwLjAiVw!5e0!3m2!1sen!2sus!4v1234567890!5m2!1sen!2sus&q=977+Heritage+Rd,+San+Diego,+CA+92154"
+                      width="100%"
+                      height="250"
+                      style={{ border: 0 }}
+                      allowFullScreen
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                    />
                   </div>
                 </div>
 
