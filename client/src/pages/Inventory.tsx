@@ -162,6 +162,9 @@ export default function Inventory() {
       const response = await fetch('/api/products');
       if (!response.ok) throw new Error('Failed to fetch products');
       return response.json();
+    }
+  });
+
   const products = [...mockProducts, ...remoteProducts];
 
   const filteredProducts = products.filter(product => {
