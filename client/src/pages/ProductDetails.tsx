@@ -191,8 +191,10 @@ Contact: support@rexautoparts.com
               <img src="/paymentlogo1-removebg-preview.png" alt="Payment" className="h-8 object-contain" />
               <img src="/paymentlogo2-removebg-preview.png" alt="Payment" className="h-8 object-contain" />
               <img src="/paymentlogo3-removebg-preview.png" alt="Payment" className="h-8 object-contain" />
-              <img src="/paymentlogo4-removebg-preview.png" alt="Payment" className="h-8 object-contain" />
+              <img src="/paymentlogo4-removebg-preview.png" alt="Payment" className="h-8 object-contain bg-white rounded px-2" />
               <img src="/paymentlogo5-removebg-preview.png" alt="Payment" className="h-8 object-contain" />
+              <img src="/paymentlogo6-removebg-preview.png" alt="Payment" className="h-8 object-contain" />
+              <img src="/paymentlogo7-removebg-preview.png" alt="Payment" className="h-8 object-contain" />
             </div>
 
             <div className="flex items-center gap-6 pt-6">
