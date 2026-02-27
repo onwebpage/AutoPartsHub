@@ -187,7 +187,7 @@ Contact: support@rexautoparts.com
               </Button>
             </div>
             
-            <div className="flex items-center justify-center gap-4 pt-6 opacity-60 grayscale">
+            <div className="flex items-center justify-center gap-4 pt-6">
               <img src="/paymentlogo1-removebg-preview.png" alt="Payment" className="h-8 object-contain" />
               <img src="/paymentlogo2-removebg-preview.png" alt="Payment" className="h-8 object-contain" />
               <img src="/paymentlogo3-removebg-preview.png" alt="Payment" className="h-8 object-contain" />
@@ -195,7 +195,7 @@ Contact: support@rexautoparts.com
               <img src="/paymentlogo5-removebg-preview.png" alt="Payment" className="h-8 object-contain" />
             </div>
 
-            <div className="flex items-center gap-6 pt-6 grayscale opacity-50">
+            <div className="flex items-center gap-6 pt-6">
               <Truck className="w-8 h-8 text-white" />
               <div className="h-4 w-px bg-white/10" />
               <CheckCircle2 className="w-8 h-8 text-white" />

@@ -77,7 +77,7 @@ export default function Footer() {
             </ul>
             <div className="mt-4 rounded-lg overflow-hidden border border-white/10">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3361.8!2d-117.0!3d32.55!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzLCsDMzJzAwLjAiTiAxMTfCsDAyJzAwLjAiVw!5e0!3m2!1sen!2sus!4v1234567890!5m2!1sen!2sus&q=977+Heritage+Rd,+San+Diego,+CA+92154"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3361.8!2d-117.0857!3d32.5556!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80d94894f2c8f3e7%3A0x1234567890abcdef!2s977%20Heritage%20Rd%2C%20San%20Diego%2C%20CA%2092154!5e0!3m2!1sen!2sus!4v1234567890123!5m2!1sen!2sus"
                 width="100%"
                 height="150"
                 style={{ border: 0 }}
@@ -92,7 +92,7 @@ export default function Footer() {
         {/* Trust Badges Section */}
         <div className="mb-12 pb-12 border-b border-white/10">
           <h4 className="font-display font-semibold text-white text-center mb-6">Trusted & Certified</h4>
-          <div className="flex flex-wrap items-center justify-center gap-8 opacity-70 grayscale hover:grayscale-0 transition-all">
+          <div className="flex flex-wrap items-center justify-center gap-8">
             <div className="flex flex-col items-center gap-2">
               <div className="bg-white rounded-lg p-3 h-16 w-16 flex items-center justify-center">
                 <svg viewBox="0 0 24 24" className="w-10 h-10" fill="#003087">
@@ -144,7 +144,7 @@ export default function Footer() {
           <p className="text-zinc-500 text-xs">
             © {new Date().getFullYear()} Rex Auto Parts (RAP). All rights reserved.
           </p>
-          <div className="flex items-center gap-4 opacity-60 grayscale">
+          <div className="flex items-center gap-4">
             <img src="/paymentlogo1-removebg-preview.png" alt="Payment" className="h-6 object-contain" />
             <img src="/paymentlogo2-removebg-preview.png" alt="Payment" className="h-6 object-contain" />
             <img src="/paymentlogo3-removebg-preview.png" alt="Payment" className="h-6 object-contain" />
