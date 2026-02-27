@@ -5,29 +5,29 @@ import type { Product } from "@shared/schema";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ShieldCheck, Truck, Clock, Wrench, Search, Star, PackageSearch, ArrowRight, CheckCircle2, Loader2, Quote } from "lucide-react";
+import { ShieldCheck, Truck, Clock, Wrench, Search, Star, PackageSearch, ArrowRight, CheckCircle2, Loader2, Quote, User, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import heroEngine from "@/assets/images/hero-engine-v2.png";
 import warehouse from "@/assets/images/warehouse.jpg";
 
 const REVIEWS = [
+  { name: "Hector Velilla", location: "Verified Customer", text: "The shipping is very fast, the item was as described, the customer service is outstanding. took the time/ concern to assist me with the order. I do trust them now and I highly recommend them. Best price I found and I checked quite a few. I would buy from them again." },
+  { name: "Collin Lugine", location: "Verified Customer", text: "Just bought a transmission for my car. I had many emails back and forth with Matt. He was able to provide all the information along with pictures of my parts that I needed. Overall experience I have had with this business has been positive and professional." },
+  { name: "Ferdrick Hernandez", location: "Verified Customer", text: "I had bought a engine from ready to start auto parts after a few weeks I got the engine it had some issues so I contacted ready to start auto parts and one of the custom service guy called Marshal helped me out to with the issue I'm definitely coming back!!!!!!" },
   { name: "Daniel H.", location: "Texas", text: "I ordered a rebuilt engine from Rex Auto Parts (PartsRAP) and what really stood out was the FREE shipping. The engine arrived in just 3 business days, securely packed and exactly as described. Honest pricing and no hidden charges. Highly recommend!" },
   { name: "Marcus L.", location: "Florida", text: "PartsRAP made the whole process simple. I purchased a used transmission and they shipped it FREE to my shop in 4 business days. The quality was excellent and my customer’s car is running perfectly. Definitely ordering again from Rex Auto Parts." },
   { name: "Steven K.", location: "Georgia", text: "Rex Auto Parts delivered my engine within 3 days with FREE nationwide shipping. No delays, no excuses. Everything matched the VIN and fit perfectly. Very professional team." },
   { name: "Anthony R.", location: "California", text: "I’ve dealt with many suppliers, but PartsRAP stands out. Transparent pricing, FREE delivery, and fast dispatch. My rebuilt transmission came well wrapped and ready to install. Smooth transaction from start to finish." },
   { name: "Brian M.", location: "Alabama", text: "Ordered a low-mileage used engine from Rex Auto Parts. They confirmed compatibility before shipping and delivered it FREE within 4 business days. Excellent communication and solid quality." },
-  { name: "Carlos D.", location: "Arizona", text: "PartsRAP saved me time and money. FREE shipping on a transmission is a big deal. Delivered fast, installed same week, and no issues at all. Highly trustworthy company." },
-  { name: "Kevin S.", location: "North Carolina", text: "Rex Auto Parts is now my go-to supplier. I run a repair shop and their FREE nationwide shipping plus quick 3–4 day delivery helps me keep my customers happy. Great engines and transmissions." },
-  { name: "Michael T.", location: "New York", text: "I was skeptical buying an engine online, but PartsRAP exceeded expectations. FREE shipping, fair pricing, and fast delivery. The engine runs like new. 100% satisfied." },
-  { name: "Jessica M.", location: "Texas", text: "I ordered a rebuilt engine from Rex Auto Parts (PartsRAP) and I couldn’t be happier. They explained everything clearly, confirmed fitment, and shipped it FREE. It arrived in just 3 business days. Smooth, professional service!" },
-  { name: "Ashley R.", location: "Florida", text: "PartsRAP made buying a transmission stress-free. FREE shipping was a huge plus, and it was delivered in 4 business days exactly as promised. Great communication and honest pricing." },
-  { name: "Samantha L.", location: "Georgia", text: "I don’t usually buy major car parts online, but Rex Auto Parts earned my trust. My used engine arrived quickly with FREE nationwide delivery. Everything matched perfectly and my mechanic approved the quality." },
 ];
 
 export default function Home() {
   const [, setLocation] = useLocation();
   const [isSearching, setIsSearching] = useState(false);
   const [searchStep, setSearchStep] = useState(0);
+  const [showAllReviews, setShowAllReviews] = useState(false);
   const [formData, setFormData] = useState({
     year: "",
     make: "",
@@ -573,29 +573,88 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Infinite Review Marquee - Moved below Why Choose RAP */}
-      <div className="relative py-8 overflow-hidden border-y border-white/5 bg-zinc-950 group">
-        <div className="flex animate-marquee gap-8 whitespace-nowrap items-center">
-          {[...REVIEWS, ...REVIEWS].map((review, i) => (
-            <div 
-              key={i} 
-              className="inline-flex items-center gap-4 bg-zinc-900/40 border border-white/5 rounded-2xl p-6 min-w-[450px]"
-            >
-              <div className="flex flex-col">
-                <div className="flex items-center gap-1 mb-2">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-yellow-500 text-yellow-500" />
-                  ))}
-                </div>
-                <p className="text-base text-zinc-300 italic whitespace-normal leading-relaxed">"{review.text}"</p>
-                <p className="text-sm font-bold text-white mt-4">
-                  {review.name} <span className="text-zinc-500 font-normal"> – {review.location}</span>
-                </p>
-              </div>
-            </div>
-          ))}
+      {/* Infinite Review Marquee - Redesigned to match image */}
+      <section className="py-24 bg-zinc-950 border-y border-white/5 overflow-hidden">
+        <div className="container mx-auto px-4 md:px-6 mb-12 text-center">
+          <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-4">Testimonials</h2>
         </div>
-      </div>
+        
+        <div className="relative group">
+          <div className="flex animate-marquee gap-8 whitespace-nowrap items-center px-4">
+            {[...REVIEWS, ...REVIEWS].map((review, i) => (
+              <div 
+                key={i} 
+                className="inline-flex flex-col bg-white rounded-lg p-8 min-w-[380px] w-[380px] shadow-lg relative h-[320px] justify-between whitespace-normal"
+              >
+                <div className="absolute top-6 right-6">
+                  <svg viewBox="0 0 24 24" className="w-6 h-6" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.66l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                  </svg>
+                </div>
+                
+                <div className="mb-4">
+                  <div className="w-12 h-12 bg-zinc-100 rounded-full flex items-center justify-center mb-4 overflow-hidden">
+                    <User className="w-8 h-8 text-zinc-400" />
+                  </div>
+                  <p className="text-[13px] text-zinc-600 leading-[1.6] line-clamp-6">
+                    {review.text}
+                  </p>
+                </div>
+
+                <div>
+                  <h4 className="font-bold text-zinc-900 text-sm mb-1">{review.name}</h4>
+                  <div className="flex items-center gap-0.5">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="flex justify-center mt-12">
+          <Button 
+            onClick={() => setShowAllReviews(true)}
+            className="bg-yellow-400 hover:bg-yellow-500 text-zinc-900 font-bold px-8 py-2 h-auto rounded-md shadow-sm border-none"
+          >
+            View All
+          </Button>
+        </div>
+      </section>
+
+      {/* Reviews Modal */}
+      <Dialog open={showAllReviews} onOpenChange={setShowAllReviews}>
+        <DialogContent className="max-w-4xl max-h-[90vh] p-0 bg-white overflow-hidden flex flex-col">
+          <DialogHeader className="p-8 pb-4 border-b">
+            <DialogTitle className="text-3xl font-display font-bold text-zinc-900">All Reviews</DialogTitle>
+          </DialogHeader>
+          <ScrollArea className="flex-1 p-8">
+            <div className="grid gap-6">
+              {REVIEWS.map((review, i) => (
+                <div key={i} className="bg-zinc-50 rounded-lg p-8 border border-zinc-100">
+                  <div className="flex justify-between items-start mb-4">
+                    <div>
+                      <h4 className="font-bold text-zinc-900 text-lg mb-1">{review.name}</h4>
+                      <div className="flex items-center gap-0.5">
+                        {[...Array(5)].map((_, i) => (
+                          <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                        ))}
+                      </div>
+                    </div>
+                    <svg viewBox="0 0 24 24" className="w-6 h-6" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.66l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                    </svg>
+                  </div>
+                  <p className="text-zinc-600 leading-relaxed italic">"{review.text}"</p>
+                  {review.location && <p className="text-xs text-zinc-400 mt-4 uppercase tracking-wider">{review.location}</p>}
+                </div>
+              ))}
+            </div>
+          </ScrollArea>
+        </DialogContent>
+      </Dialog>
 
       {/* GENUINE OEM PARTS INVENTORY */}
       <section className="py-24 bg-zinc-900/30">
