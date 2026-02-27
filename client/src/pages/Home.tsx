@@ -57,7 +57,7 @@ export default function Home() {
       price: 450000,
       status: "In Stock",
       customer: "Pending",
-      imageUrl: "https://images.unsplash.com/photo-1597766333691-b159b40f8cfc?auto=format&fit=crop&q=80&w=800",
+      imageUrl: "/images/engine-1.jpg",
       protection: "90-Day Return",
       location: "Texas Warehouse",
       description: "Tested and verified performance engine.",
@@ -74,7 +74,7 @@ export default function Home() {
       price: 280000,
       status: "In Stock",
       customer: "Pending",
-      imageUrl: "https://images.unsplash.com/photo-1635773054018-22c48472944a?auto=format&fit=crop&q=80&w=800",
+      imageUrl: "/images/transmission-1.jpg",
       protection: "90-Day Return",
       location: "Florida Hub",
       description: "Smooth shifting transmission, fully inspected.",
@@ -91,7 +91,7 @@ export default function Home() {
       price: 45000,
       status: "In Stock",
       customer: "Pending",
-      imageUrl: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=800",
+      imageUrl: "/images/chassis-1.jpg",
       protection: "90-Day Return",
       location: "California Center",
       description: "High-grade steel chassis plate for heavy duty use.",
@@ -108,10 +108,112 @@ export default function Home() {
       price: 520000,
       status: "In Stock",
       customer: "Pending",
-      imageUrl: "https://images.unsplash.com/photo-1486006920555-c77dcf18193c?auto=format&fit=crop&q=80&w=800",
+      imageUrl: "/images/engine-1.jpg",
       protection: "90-Day Return",
       location: "Georgia Warehouse",
       description: "High performance racing engine in excellent condition.",
+      createdAt: new Date()
+    },
+    {
+      id: "5",
+      partId: "TRN-005",
+      type: "transmission",
+      year: 2019,
+      make: "BMW",
+      model: "3 Series",
+      details: "ZF 8HP Automatic Transmission",
+      price: 320000,
+      status: "In Stock",
+      customer: "Pending",
+      imageUrl: "/images/transmission-1.jpg",
+      protection: "90-Day Return",
+      location: "New York Hub",
+      description: "Precision engineered ZF transmission for luxury performance.",
+      createdAt: new Date()
+    },
+    {
+      id: "6",
+      partId: "AXL-006",
+      type: "axle",
+      year: 2021,
+      make: "Ford",
+      model: "Super Duty",
+      details: "Dana 60 Front Axle Assembly",
+      price: 180000,
+      status: "In Stock",
+      customer: "Pending",
+      imageUrl: "/images/axle-1.jpg",
+      protection: "90-Day Return",
+      location: "Arizona Warehouse",
+      description: "Heavy duty axle for towing and off-road applications.",
+      createdAt: new Date()
+    },
+    {
+      id: "7",
+      partId: "DIF-007",
+      type: "differential",
+      year: 2022,
+      make: "Jeep",
+      model: "Wrangler",
+      details: "Tru-Lok Electronic Locking Differential",
+      price: 85000,
+      status: "In Stock",
+      customer: "Pending",
+      imageUrl: "/images/differential-1.jpg",
+      protection: "90-Day Return",
+      location: "Colorado Hub",
+      description: "Genuine Jeep locking differential for ultimate traction.",
+      createdAt: new Date()
+    },
+    {
+      id: "8",
+      partId: "ENG-008",
+      type: "engine",
+      year: 2018,
+      make: "Toyota",
+      model: "Camry",
+      details: "2.5L 4-Cylinder A25A-FKS Engine",
+      price: 195000,
+      status: "In Stock",
+      customer: "Pending",
+      imageUrl: "/images/engine-1.jpg",
+      protection: "90-Day Return",
+      location: "Texas Warehouse",
+      description: "Reliable Toyota engine with low verified miles.",
+      createdAt: new Date()
+    },
+    {
+      id: "9",
+      partId: "AXL-009",
+      type: "axle",
+      year: 2020,
+      make: "RAM",
+      model: "2500",
+      details: "Rear Axle Assembly - 11.5 inch Ring Gear",
+      price: 215000,
+      status: "In Stock",
+      customer: "Pending",
+      imageUrl: "/images/axle-1.jpg",
+      protection: "90-Day Return",
+      location: "Ohio Warehouse",
+      description: "Heavy duty rear axle for RAM trucks.",
+      createdAt: new Date()
+    },
+    {
+      id: "10",
+      partId: "TRN-010",
+      type: "transmission",
+      year: 2017,
+      make: "Nissan",
+      model: "Altima",
+      details: "CVT Transmission Assembly",
+      price: 145000,
+      status: "In Stock",
+      customer: "Pending",
+      imageUrl: "/images/transmission-1.jpg",
+      protection: "90-Day Return",
+      location: "Nevada Hub",
+      description: "Genuine Nissan CVT transmission, low miles.",
       createdAt: new Date()
     }
   ];
@@ -205,7 +307,7 @@ export default function Home() {
               <div className="flex flex-wrap items-center gap-8 pt-4 animate-in fade-in slide-in-from-left duration-1000 delay-500">
                 <div className="flex items-center gap-3">
                   <div className="p-2 rounded-lg bg-zinc-900 border border-white/5">
-                    <ShieldCheck className="w-6 h-6 text-primary" />
+                    <img src="/images/engine-1.jpg" className="w-8 h-8 object-cover rounded" alt="Engine" />
                   </div>
                   <div>
                     <p className="text-white font-bold leading-none">90-Day Returns</p>
@@ -214,7 +316,7 @@ export default function Home() {
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="p-2 rounded-lg bg-zinc-900 border border-white/5">
-                    <Truck className="w-6 h-6 text-primary" />
+                    <img src="/images/transmission-1.jpg" className="w-8 h-8 object-cover rounded" alt="Transmission" />
                   </div>
                   <div>
                     <p className="text-white font-bold leading-none">Fast Shipping</p>
@@ -494,6 +596,60 @@ export default function Home() {
           ))}
         </div>
       </div>
+
+      {/* GENUINE OEM PARTS INVENTORY */}
+      <section className="py-24 bg-zinc-900/30">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-4">
+              Genuine OEM Parts Inventory
+            </h2>
+            <div className="h-1.5 w-24 bg-primary mx-auto rounded-full" />
+          </div>
+          
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+            <div className="group cursor-pointer" onClick={() => setLocation("/inventory?type=engine")}>
+              <div className="aspect-square rounded-3xl overflow-hidden border border-white/10 mb-6 relative">
+                <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity z-10" />
+                <img src="/images/engine-1.jpg" alt="Engines" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+              </div>
+              <h3 className="text-xl font-bold text-white text-center group-hover:text-primary transition-colors">Engines</h3>
+            </div>
+            
+            <div className="group cursor-pointer" onClick={() => setLocation("/inventory?type=transmission")}>
+              <div className="aspect-square rounded-3xl overflow-hidden border border-white/10 mb-6 relative">
+                <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity z-10" />
+                <img src="/images/transmission-1.jpg" alt="Transmissions" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+              </div>
+              <h3 className="text-xl font-bold text-white text-center group-hover:text-primary transition-colors">Transmissions</h3>
+            </div>
+            
+            <div className="group cursor-pointer" onClick={() => setLocation("/inventory?type=axle")}>
+              <div className="aspect-square rounded-3xl overflow-hidden border border-white/10 mb-6 relative">
+                <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity z-10" />
+                <img src="/images/axle-1.jpg" alt="Axles" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+              </div>
+              <h3 className="text-xl font-bold text-white text-center group-hover:text-primary transition-colors">Axles</h3>
+            </div>
+            
+            <div className="group cursor-pointer" onClick={() => setLocation("/inventory?type=chassis")}>
+              <div className="aspect-square rounded-3xl overflow-hidden border border-white/10 mb-6 relative">
+                <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity z-10" />
+                <img src="/images/chassis-1.jpg" alt="Chassis" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+              </div>
+              <h3 className="text-xl font-bold text-white text-center group-hover:text-primary transition-colors">Chassis</h3>
+            </div>
+            
+            <div className="group cursor-pointer" onClick={() => setLocation("/inventory?type=differential")}>
+              <div className="aspect-square rounded-3xl overflow-hidden border border-white/10 mb-6 relative">
+                <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity z-10" />
+                <img src="/images/differential-1.jpg" alt="Differentials" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+              </div>
+              <h3 className="text-xl font-bold text-white text-center group-hover:text-primary transition-colors">Differentials</h3>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* MISSION & WAREHOUSE */}
       <section className="py-24 relative overflow-hidden">
