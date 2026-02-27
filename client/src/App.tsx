@@ -43,7 +43,9 @@ function Router() {
           <Route path="/terms-of-service" component={TermsOfService} />
           <Route path="/contact" component={Contact} />
           <Route path="/inventory" component={Inventory} />
-          <Route path="/product/:id" component={ProductDetails} />
+          <Route path="/product/:id">
+            {(params) => <ProductDetails params={params} />}
+          </Route>
           <Route path="/admin-login" component={AdminLogin} />
           <Route path="/admin">
             {() => <ProtectedRoute component={Admin} />}

@@ -53,18 +53,26 @@ export async function registerRoutes(
     }
   });
 
-  // Create product with image upload
-  app.post("/api/products", upload.single('image'), async (req, res) => {
+  // Create product with image upload or JSON
+  app.post("/api/products", (req, res, next) => {
+    const contentType = req.headers['content-type'] || '';
+    if (contentType.includes('multipart/form-data')) {
+      upload.single('image')(req, res, next);
+    } else {
+      next();
+    }
+  }, async (req, res) => {
     try {
-      const productData = {
-        ...req.body,
-        year: parseInt(req.body.year),
-        price: parseInt(req.body.price),
-        imageUrl: req.file ? `/uploads/${req.file.filename}` : null
-      };
+      let productData = req.body;
+      
+      if (req.file) {
+        productData.imageUrl = `/uploads/${req.file.filename}`;
+      }
+      
+      if (typeof productData.year === 'string') productData.year = parseInt(productData.year);
+      if (typeof productData.price === 'string') productData.price = parseInt(productData.price);
 
-      const validated = insertProductSchema.parse(productData);
-      const product = await storage.createProduct(validated);
+      const product = await storage.createProduct(productData);
       res.status(201).json(product);
     } catch (error: any) {
       res.status(400).json({ message: error.message || "Failed to create product" });

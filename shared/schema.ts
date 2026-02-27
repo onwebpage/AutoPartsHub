@@ -46,6 +46,8 @@ export const insertUserSchema = createInsertSchema(users).pick({
 export const insertProductSchema = createInsertSchema(products).omit({
   id: true,
   createdAt: true,
+}).extend({
+  imageUrl: z.string().optional().nullable(),
 });
 
 export const insertReviewSchema = createInsertSchema(reviews).omit({

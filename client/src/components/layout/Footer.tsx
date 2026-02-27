@@ -78,6 +78,57 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* Trust Badges Section */}
+        <div className="mb-12 pb-12 border-b border-white/10">
+          <h4 className="font-display font-semibold text-white text-center mb-6">Trusted & Certified</h4>
+          <div className="flex flex-wrap items-center justify-center gap-8 opacity-70 grayscale hover:grayscale-0 transition-all">
+            <div className="flex flex-col items-center gap-2">
+              <div className="bg-white rounded-lg p-3 h-16 w-16 flex items-center justify-center">
+                <svg viewBox="0 0 24 24" className="w-10 h-10" fill="#003087">
+                  <path d="M12 2L3 7v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-9-5zm0 18c-3.86-.96-7-5.05-7-9V8.3l7-3.89 7 3.89V11c0 3.95-3.14 8.04-7 9z"/>
+                  <path d="M10 14l-3-3 1.41-1.41L10 11.17l5.59-5.58L17 7l-7 7z"/>
+                </svg>
+              </div>
+              <span className="text-xs text-zinc-400 font-semibold">BBB Accredited</span>
+            </div>
+            <div className="flex flex-col items-center gap-2">
+              <div className="bg-white rounded-lg p-3 h-16 w-16 flex items-center justify-center">
+                <svg viewBox="0 0 24 24" className="w-10 h-10" fill="#1a73e8">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+              </div>
+              <span className="text-xs text-zinc-400 font-semibold">Verified Business</span>
+            </div>
+            <div className="flex flex-col items-center gap-2">
+              <div className="bg-white rounded-lg p-3 h-16 w-16 flex items-center justify-center">
+                <svg viewBox="0 0 24 24" className="w-10 h-10" fill="#d32f2f">
+                  <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
+                  <path d="M10 17l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z" fill="white"/>
+                </svg>
+              </div>
+              <span className="text-xs text-zinc-400 font-semibold">ARA Member</span>
+            </div>
+            <div className="flex flex-col items-center gap-2">
+              <div className="bg-white rounded-lg p-3 h-16 w-16 flex items-center justify-center">
+                <svg viewBox="0 0 24 24" className="w-10 h-10" fill="#ff6b00">
+                  <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5zm0 18.5c-4.28-1.07-7.5-5.53-7.5-10.5V8.3l7.5-4.16 7.5 4.16V10c0 4.97-3.22 9.43-7.5 10.5z"/>
+                  <circle cx="12" cy="12" r="3" fill="#ff6b00"/>
+                </svg>
+              </div>
+              <span className="text-xs text-zinc-400 font-semibold">SEMA Affiliate</span>
+            </div>
+            <div className="flex flex-col items-center gap-2">
+              <div className="bg-white rounded-lg p-3 h-16 w-16 flex items-center justify-center">
+                <svg viewBox="0 0 24 24" className="w-10 h-10" fill="#2e7d32">
+                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                  <circle cx="12" cy="12" r="10" fill="none" stroke="#2e7d32" strokeWidth="2"/>
+                </svg>
+              </div>
+              <span className="text-xs text-zinc-400 font-semibold">ISO Certified</span>
+            </div>
+          </div>
+        </div>
+
         <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-zinc-500 text-xs">
             © {new Date().getFullYear()} Rex Auto Parts (RAP). All rights reserved.
