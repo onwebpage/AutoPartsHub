@@ -1,6 +1,6 @@
 import { Phone, Mail, MapPin, LogOut } from "lucide-react";
 import { Link, useLocation } from "wouter";
-import logo from "/logo1.jpeg";
+import logo from "/logo.jpeg";
 
 export default function Footer() {
   const [, setLocation] = useLocation();
