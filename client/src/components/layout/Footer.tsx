@@ -15,13 +15,13 @@ export default function Footer() {
     <footer className="bg-zinc-950 border-t border-white/10 pt-16 pb-8">
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-          <div className="space-y-4">
+          <div className="space-y-4 -mt-2">
             <Link href="/">
-              <div className="flex items-center gap-2 cursor-pointer group bg-white px-1 py-0.5 rounded-lg">
+              <div className="block cursor-pointer group bg-white px-2 py-1 rounded-lg w-fit mb-4">
                 <img 
                   src={logo} 
                   alt="Rex Auto Parts Logo" 
-                  className="h-14 w-auto object-contain" 
+                  className="max-h-[60px] w-auto object-contain block" 
                 />
               </div>
             </Link>
