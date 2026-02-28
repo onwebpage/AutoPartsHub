@@ -26,7 +26,7 @@ export default function Navbar() {
               <img 
                 src={logo} 
                 alt="Rex Auto Parts Logo" 
-                className="h-24 w-auto object-contain brightness-110 group-hover:scale-105 transition-transform" 
+                className="h-32 md:h-24 w-auto object-contain brightness-110 group-hover:scale-105 transition-transform" 
               />
             </div>
           </Link>
