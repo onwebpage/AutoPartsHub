@@ -39,6 +39,11 @@
   100% { transform: translateX(-50%); }
 }
 
+@keyframes scroll-right {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
 .animate-marquee {
   display: flex;
   width: fit-content;
@@ -47,6 +52,12 @@
 
 .animate-marquee:hover {
   animation-play-state: paused;
+}
+
+.animate-scroll-right {
+  display: flex;
+  width: fit-content;
+  animation: scroll-right 40s linear infinite;
 }
 
 @keyframes slow-zoom {

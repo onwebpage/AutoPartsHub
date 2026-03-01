@@ -1,6 +1,6 @@
 import { Phone, Mail, MapPin, LogOut } from "lucide-react";
 import { Link, useLocation } from "wouter";
-import logo from "/logo.jpeg";
+import logo from "/logo.png";
 
 export default function Footer() {
   const [, setLocation] = useLocation();
@@ -17,11 +17,11 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           <div className="space-y-4 -mt-2">
             <Link href="/">
-              <div className="block cursor-pointer group bg-white px-2 py-1 rounded-lg w-fit mb-4">
+              <div className="block cursor-pointer group w-fit mb-4">
                 <img 
                   src={logo} 
                   alt="Rex Auto Parts Logo" 
-                  className="max-h-[60px] w-auto object-contain block" 
+                  className="max-h-[80px] w-auto object-contain block" 
                 />
               </div>
             </Link>

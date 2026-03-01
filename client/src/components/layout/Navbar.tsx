@@ -2,7 +2,7 @@ import { Link, useLocation } from "wouter";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import logo from "/logo.jpeg";
+import logo from "/logo.png";
 
 export default function Navbar() {
   const [location] = useLocation();
@@ -22,11 +22,11 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link href="/">
-            <div className="flex items-center gap-2 group cursor-pointer bg-white px-1 py-0.5 rounded-lg">
+            <div className="flex items-center gap-2 group cursor-pointer">
               <img 
                 src={logo} 
                 alt="Rex Auto Parts Logo" 
-                className="h-16 md:h-14 w-auto object-contain group-hover:scale-105 transition-transform" 
+                className="h-20 md:h-18 w-auto object-contain group-hover:scale-105 transition-transform" 
               />
             </div>
           </Link>

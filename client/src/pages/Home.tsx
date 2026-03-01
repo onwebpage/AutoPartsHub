@@ -366,6 +366,25 @@ export default function Home() {
         </div>
       </section>
 
+      {/* BRAND LOGOS CAROUSEL */}
+      <section className="py-12 bg-zinc-950 border-y border-white/5 overflow-hidden">
+        <div className="relative">
+          <div className="flex animate-scroll-right gap-8 whitespace-nowrap items-center">
+            {[...Array(2)].map((_, setIndex) => (
+              [...Array(23)].map((_, i) => (
+                <div key={`${setIndex}-${i}`} className="inline-flex items-center justify-center bg-white rounded-lg p-4 min-w-[160px] h-20 shadow-sm">
+                  <img 
+                    src={`/brandlogo${i + 1}.jpeg`} 
+                    alt={`Brand ${i + 1}`} 
+                    className="max-w-full max-h-full object-contain"
+                  />
+                </div>
+              ))
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* WHY CHOOSE US */}
       <section className="py-24 bg-zinc-950/50" id="about">
         <div className="container mx-auto px-4 md:px-6">
